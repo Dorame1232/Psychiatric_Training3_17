@@ -1,0 +1,1713 @@
+<!doctype html>
+<html lang="th" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>การฝึกปฏิบัติจิตเวช</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family: 'PixelThai'; src: local('Press Start 2P'); }
+    * { image-rendering: pixelated; }
+    .pixel-border{
+      border:4px solid #8B4513;
+      box-shadow:
+        inset -4px -4px 0px 0px #5D2E0C,
+        inset  4px  4px 0px 0px #C4A484,
+        8px 8px 0px 0px rgba(0,0,0,0.2);
+    }
+    .pixel-btn{
+      border:4px solid #8B4513;
+      box-shadow:
+        inset -3px -3px 0px 0px #5D2E0C,
+        inset  3px  3px 0px 0px #C4A484,
+        4px 4px 0px 0px rgba(0,0,0,0.3);
+      transition: all .1s;
+    }
+    .pixel-btn:hover{
+      transform: translate(2px,2px);
+      box-shadow:
+        inset -3px -3px 0px 0px #5D2E0C,
+        inset  3px  3px 0px 0px #C4A484,
+        2px 2px 0px 0px rgba(0,0,0,0.3);
+    }
+    .pixel-btn:active{
+      transform: translate(4px,4px);
+      box-shadow:
+        inset -3px -3px 0px 0px #5D2E0C,
+        inset  3px  3px 0px 0px #C4A484;
+    }
+    .character-card{transition:all .2s; cursor:pointer;}
+    .character-card:hover{transform:scale(1.05);}
+    .character-card.selected{
+      border-color:#FF69B4;
+      box-shadow: 0 0 20px #FF69B4, 0 0 40px rgba(255,105,180,0.5);
+    }
+    .float-animation{animation: float 3s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .sparkle{animation:sparkle 1.5s ease-in-out infinite;}
+    @keyframes sparkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}
+    .timeline-circle{transition:all .3s;}
+    .timeline-circle:hover{transform:scale(1.1); box-shadow:0 0 15px rgba(255,105,180,.6);}
+    .house-card{transition:all .3s; cursor:pointer;}
+    .house-card:hover{transform:translateY(-5px); box-shadow:0 10px 20px rgba(0,0,0,.2);}
+    .info-card{transition:all .3s;}
+    .info-card:hover{transform:translateY(-3px);}
+    .scroll-container{scrollbar-width:thin; scrollbar-color:#FFB6C1 #FFF0F5;}
+    .scroll-container::-webkit-scrollbar{width:8px;}
+    .scroll-container::-webkit-scrollbar-track{background:#FFF0F5;border-radius:4px;}
+    .scroll-container::-webkit-scrollbar-thumb{background:#FFB6C1;border-radius:4px;}
+    .thai-pattern{
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(255,182,193,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,218,233,0.4) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255,240,245,0.5) 0%, transparent 70%);
+    }
+
+    /* Simple modal */
+    .modal-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.45);
+      display:flex; align-items:center; justify-content:center;
+      padding:16px; z-index:50;
+    }
+    .hidden{display:none !important;}
+
+    /* Music toggle */
+    .music-fab{
+      position:fixed; right:14px; bottom:14px; z-index:60;
+    }
+  </style>
+</head>
+
+<body class="h-full overflow-auto">
+  <!-- ✅ Background Music (วางไฟล์ Music.mp3 ไว้โฟลเดอร์เดียวกับไฟล์ HTML นี้) -->
+  <audio id="bgm" src="Music.mp3" loop preload="auto"></audio>
+  <div class="music-fab">
+    <button id="musicBtn"
+      class="pixel-btn bg-gradient-to-r from-pink-400 to-pink-500 text-white px-4 py-3 font-bold"
+      style="font-family:'Sarabun',sans-serif;">
+      🔊 เพลง: ปิด
+    </button>
+  </div>
+
+  <!-- App Wrapper -->
+  <div id="app" class="min-h-full w-full thai-pattern"
+       style="background: linear-gradient(135deg, #FFE4EC 0%, #FFF0F5 25%, #FFD1DC 50%, #FFF5F8 75%, #FFEBF0 100%);">
+
+    <!-- ===================== Screen 1: Welcome ===================== -->
+    <div id="screen-welcome" class="min-h-full w-full flex flex-col items-center justify-center p-4 relative">
+      <!-- Decorative -->
+      <div class="absolute top-4 left-4 text-4xl sparkle">🌸</div>
+      <div class="absolute top-4 right-4 text-4xl sparkle" style="animation-delay:.5s;">🪷</div>
+      <div class="absolute bottom-4 left-4 text-3xl sparkle" style="animation-delay:1s;">✨</div>
+      <div class="absolute bottom-4 right-4 text-3xl sparkle" style="animation-delay:.3s;">🏵️</div>
+
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-8 max-w-lg w-full text-center relative">
+        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
+          <div class="text-5xl">🏛️</div>
+        </div>
+
+        <div class="mt-4 mb-6">
+          <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2 pixel-border"
+               style="border-color:#FF69B4;">
+            <span class="font-bold text-lg tracking-wider" style="font-family:'Sarabun',sans-serif;">
+              🎮 PSYCHIATRIC TRAINING 🎮
+            </span>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-pink-100 to-pink-200 rounded-lg p-4 mb-6 pixel-border" style="border-width:3px;">
+          <h1 id="welcome-text" class="text-2xl font-bold text-pink-800 mb-2" style="font-family:'Sarabun',sans-serif;">
+            สวัสดีค่ะ/ครับ 🙏
+          </h1>
+          <p class="text-pink-700 text-lg" style="font-family:'Sarabun',sans-serif;">
+            ยินดีต้อนรับเข้าสู่การฝึกปฏิบัติจิตเวช
+          </p>
+        </div>
+
+        <!-- ✅ ตัวละครเดิม (Pixel Nurse Character) — กลับมาแล้ว -->
+        <div class="float-animation mb-6">
+          <svg width="80" height="100" viewBox="0 0 80 100" class="mx-auto" aria-label="pixel nurse">
+            <!-- Head -->
+            <rect x="24" y="8" width="32" height="28" fill="#FFE4C4" />
+            <!-- Hair -->
+            <rect x="20" y="4" width="40" height="12" fill="#2C1810" />
+            <rect x="20" y="4" width="8" height="20" fill="#2C1810" />
+            <rect x="52" y="4" width="8" height="20" fill="#2C1810" />
+            <!-- Nurse Cap -->
+            <rect x="24" y="0" width="32" height="8" fill="#FFFFFF" />
+            <rect x="36" y="0" width="8" height="8" fill="#FF69B4" />
+            <!-- Eyes -->
+            <rect x="30" y="18" width="6" height="6" fill="#2C1810" />
+            <rect x="44" y="18" width="6" height="6" fill="#2C1810" />
+            <rect x="32" y="20" width="2" height="2" fill="#FFFFFF" />
+            <rect x="46" y="20" width="2" height="2" fill="#FFFFFF" />
+            <!-- Blush -->
+            <rect x="26" y="26" width="6" height="4" fill="#FFB6C1" />
+            <rect x="48" y="26" width="6" height="4" fill="#FFB6C1" />
+            <!-- Smile -->
+            <rect x="34" y="30" width="12" height="2" fill="#D4837A" />
+            <rect x="32" y="28" width="2" height="2" fill="#D4837A" />
+            <rect x="46" y="28" width="2" height="2" fill="#D4837A" />
+            <!-- Body -->
+            <rect x="20" y="36" width="40" height="40" fill="#FFFFFF" />
+            <rect x="28" y="40" width="24" height="4" fill="#FFB6C1" />
+            <!-- Arms -->
+            <rect x="8" y="40" width="12" height="24" fill="#FFFFFF" />
+            <rect x="60" y="40" width="12" height="24" fill="#FFFFFF" />
+            <rect x="8" y="64" width="10" height="8" fill="#FFE4C4" />
+            <rect x="62" y="64" width="10" height="8" fill="#FFE4C4" />
+            <!-- Legs -->
+            <rect x="24" y="76" width="12" height="16" fill="#FFFFFF" />
+            <rect x="44" y="76" width="12" height="16" fill="#FFFFFF" />
+            <!-- Shoes -->
+            <rect x="22" y="92" width="14" height="6" fill="#FF69B4" />
+            <rect x="44" y="92" width="14" height="6" fill="#FF69B4" />
+          </svg>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-pink-700 font-semibold mb-2 text-lg" style="font-family:'Sarabun',sans-serif;">
+            📝 กรุณากรอกชื่อของคุณ
+          </label>
+          <input type="text" id="player-name"
+                 class="w-full px-4 py-3 pixel-border bg-pink-50 text-pink-800 text-center text-lg
+                        focus:outline-none focus:ring-2 focus:ring-pink-400"
+                 style="font-family:'Sarabun',sans-serif;border-width:3px;"
+                 placeholder="ใส่ชื่อของคุณที่นี่..." />
+        </div>
+
+        <button onclick="goToCharacterSelect()"
+                class="pixel-btn bg-gradient-to-r from-pink-400 to-pink-500 text-white px-8 py-4 text-lg font-bold w-full
+                       hover:from-pink-500 hover:to-pink-600"
+                style="font-family:'Sarabun',sans-serif;">
+          🎭 เลือกตัวละคร 🎭
+        </button>
+
+        <div class="mt-4 flex justify-center gap-2 text-2xl">
+          <span>🌺</span><span>💮</span><span>🌸</span><span>💮</span><span>🌺</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 2: Character Selection ===================== -->
+    <div id="screen-character" class="min-h-full w-full flex flex-col items-center justify-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-2xl w-full text-center">
+        <div class="mb-6">
+          <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2 pixel-border"
+               style="border-color:#FF69B4;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">🎭 เลือกตัวละครของคุณ 🎭</span>
+          </div>
+          <p id="player-greeting" class="text-pink-600 mt-3 text-lg" style="font-family:'Sarabun',sans-serif;"></p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <!-- Character 1 -->
+          <div id="char-1" onclick="selectCharacter(1)"
+               class="character-card pixel-border bg-gradient-to-b from-pink-50 to-pink-100 p-4 rounded-lg"
+               style="border-width:3px;">
+            <div class="float-animation">
+              <svg width="120" height="160" viewBox="0 0 120 160" class="mx-auto" aria-label="character nurse">
+                <rect x="36" y="16" width="48" height="44" fill="#FFE4C4" />
+                <rect x="28" y="8" width="64" height="16" fill="#2C1810" />
+                <rect x="28" y="8" width="12" height="52" fill="#2C1810" />
+                <rect x="80" y="8" width="12" height="52" fill="#2C1810" />
+                <rect x="32" y="24" width="8" height="8" fill="#2C1810" />
+                <rect x="80" y="24" width="8" height="8" fill="#2C1810" />
+                <rect x="36" y="4" width="48" height="12" fill="#FFFFFF" />
+                <rect x="52" y="4" width="16" height="12" fill="#FF69B4" />
+                <rect x="56" y="6" width="8" height="8" fill="#FFFFFF" />
+                <rect x="44" y="32" width="10" height="10" fill="#2C1810" />
+                <rect x="66" y="32" width="10" height="10" fill="#2C1810" />
+                <rect x="46" y="34" width="4" height="4" fill="#FFFFFF" />
+                <rect x="68" y="34" width="4" height="4" fill="#FFFFFF" />
+                <rect x="38" y="44" width="10" height="6" fill="#FFB6C1" />
+                <rect x="72" y="44" width="10" height="6" fill="#FFB6C1" />
+                <rect x="50" y="50" width="20" height="4" fill="#D4837A" />
+                <rect x="46" y="48" width="4" height="4" fill="#D4837A" />
+                <rect x="70" y="48" width="4" height="4" fill="#D4837A" />
+                <rect x="28" y="60" width="64" height="60" fill="#FFFFFF" />
+                <rect x="40" y="64" width="40" height="8" fill="#FFB6C1" />
+                <rect x="52" y="68" width="16" height="20" fill="#FFB6C1" />
+                <rect x="68" y="84" width="16" height="16" fill="#FFF0F5" />
+                <rect x="70" y="86" width="4" height="8" fill="#FF69B4" />
+                <rect x="8" y="64" width="20" height="40" fill="#FFFFFF" />
+                <rect x="92" y="64" width="20" height="40" fill="#FFFFFF" />
+                <rect x="8" y="104" width="18" height="12" fill="#FFE4C4" />
+                <rect x="94" y="104" width="18" height="12" fill="#FFE4C4" />
+                <rect x="28" y="120" width="64" height="20" fill="#FFFFFF" />
+                <rect x="36" y="140" width="16" height="16" fill="#FFE4C4" />
+                <rect x="68" y="140" width="16" height="16" fill="#FFE4C4" />
+                <rect x="32" y="152" width="22" height="8" fill="#FF69B4" />
+                <rect x="66" y="152" width="22" height="8" fill="#FF69B4" />
+              </svg>
+            </div>
+            <p class="mt-3 text-pink-700 font-bold text-lg" style="font-family:'Sarabun',sans-serif;">👩‍⚕️ ชุดพยาบาล</p>
+            <p class="text-pink-500 text-sm" style="font-family:'Sarabun',sans-serif;">สวยงามเป็นทางการ</p>
+          </div>
+
+          <!-- Character 2 -->
+          <div id="char-2" onclick="selectCharacter(2)"
+               class="character-card pixel-border bg-gradient-to-b from-pink-50 to-pink-100 p-4 rounded-lg"
+               style="border-width:3px;">
+            <div class="float-animation" style="animation-delay:.5s;">
+              <svg width="120" height="160" viewBox="0 0 120 160" class="mx-auto" aria-label="character scrub">
+                <rect x="36" y="16" width="48" height="44" fill="#FFE4C4" />
+                <rect x="28" y="8" width="64" height="16" fill="#4A3728" />
+                <rect x="28" y="8" width="12" height="36" fill="#4A3728" />
+                <rect x="80" y="8" width="12" height="36" fill="#4A3728" />
+                <rect x="88" y="20" width="12" height="32" fill="#4A3728" />
+                <rect x="96" y="24" width="8" height="24" fill="#4A3728" />
+                <rect x="86" y="32" width="6" height="8" fill="#FF69B4" />
+                <rect x="44" y="32" width="10" height="10" fill="#2C1810" />
+                <rect x="66" y="32" width="10" height="10" fill="#2C1810" />
+                <rect x="46" y="34" width="4" height="4" fill="#FFFFFF" />
+                <rect x="68" y="34" width="4" height="4" fill="#FFFFFF" />
+                <rect x="38" y="44" width="10" height="6" fill="#FFB6C1" />
+                <rect x="72" y="44" width="10" height="6" fill="#FFB6C1" />
+                <rect x="48" y="48" width="24" height="6" fill="#D4837A" />
+                <rect x="44" y="46" width="4" height="4" fill="#D4837A" />
+                <rect x="72" y="46" width="4" height="4" fill="#D4837A" />
+                <rect x="28" y="60" width="64" height="60" fill="#87CEEB" />
+                <rect x="52" y="60" width="16" height="20" fill="#FFE4C4" />
+                <rect x="32" y="80" width="20" height="20" fill="#6CB4D8" />
+                <rect x="36" y="84" width="6" height="10" fill="#FF69B4" />
+                <rect x="8" y="64" width="20" height="36" fill="#87CEEB" />
+                <rect x="92" y="64" width="20" height="36" fill="#87CEEB" />
+                <rect x="8" y="100" width="18" height="12" fill="#FFE4C4" />
+                <rect x="94" y="100" width="18" height="12" fill="#FFE4C4" />
+                <rect x="28" y="120" width="28" height="32" fill="#87CEEB" />
+                <rect x="64" y="120" width="28" height="32" fill="#87CEEB" />
+                <rect x="28" y="152" width="26" height="8" fill="#FFFFFF" />
+                <rect x="66" y="152" width="26" height="8" fill="#FFFFFF" />
+              </svg>
+            </div>
+            <p class="mt-3 text-pink-700 font-bold text-lg" style="font-family:'Sarabun',sans-serif;">👩‍⚕️ ชุดสครับ</p>
+            <p class="text-pink-500 text-sm" style="font-family:'Sarabun',sans-serif;">คล่องตัวทำงานสะดวก</p>
+          </div>
+        </div>
+
+        <div id="selection-status" class="mb-4 text-pink-600 text-lg hidden" style="font-family:'Sarabun',sans-serif;">
+          ✨ คุณเลือกตัวละครแล้ว! ✨
+        </div>
+
+        <button id="continue-btn" onclick="goToTimeline()"
+                class="pixel-btn bg-gradient-to-r from-pink-400 to-pink-500 text-white px-8 py-4 text-lg font-bold w-full
+                       hover:from-pink-500 hover:to-pink-600 hidden"
+                style="font-family:'Sarabun',sans-serif;">
+          🌟 เข้าสู่โลกแห่งการเรียนรู้ 🌟
+        </button>
+
+        <button onclick="goToWelcome()" class="mt-3 text-pink-500 hover:text-pink-700 underline" style="font-family:'Sarabun',sans-serif;">
+          ← ย้อนกลับ
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 3: Timeline ===================== -->
+    <div id="screen-timeline" class="min-h-full w-full flex flex-col items-center justify-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2 pixel-border" style="border-color:#FF69B4;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">📅 Timeline การปฏิบัติ (03-17) 📅</span>
+          </div>
+        </div>
+
+        <div class="relative py-8 overflow-x-auto scroll-container">
+          <div class="flex items-center justify-between min-w-max px-4">
+            <!-- 1 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(1)">
+                <span class="text-white font-bold text-xl">1</span>
+              </div>
+              <div class="mt-2 text-center max-w-24">
+                <p class="text-pink-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">ประชุมทีม</p>
+              </div>
+              <span class="text-2xl mt-1">🤝</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- 2 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(2)">
+                <span class="text-white font-bold text-xl">2</span>
+              </div>
+              <div class="mt-2 text-center max-w-28">
+                <p class="text-pink-800 font-semibold text-xs" style="font-family:'Sarabun',sans-serif;">
+                  ลงปฏิบัติการชุมชน เยี่ยมบ้าน สำรวจปัญหา วางแผนการพยาบาล
+                </p>
+              </div>
+              <span class="text-2xl mt-1">🏠</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- 3 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(3)">
+                <span class="text-white font-bold text-xl">3</span>
+              </div>
+              <div class="mt-2 text-center max-w-28">
+                <p class="text-pink-800 font-semibold text-xs" style="font-family:'Sarabun',sans-serif;">
+                  ลงมือทำนวัตกรรมเพื่อไปใช้กับผู้ป่วย
+                </p>
+              </div>
+              <span class="text-2xl mt-1">💡</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- 4 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(4)">
+                <span class="text-white font-bold text-xl">4</span>
+              </div>
+              <div class="mt-2 text-center max-w-24">
+                <p class="text-pink-800 font-semibold text-xs" style="font-family:'Sarabun',sans-serif;">ปฏิบัติตามแผนการพยาบาล</p>
+              </div>
+              <span class="text-2xl mt-1">📋</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- 5 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(5)">
+                <span class="text-white font-bold text-xl">5</span>
+              </div>
+              <div class="mt-2 text-center max-w-24">
+                <p class="text-pink-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">ขึ้นฝึก OPD</p>
+              </div>
+              <span class="text-2xl mt-1">🏥</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- 6 -->
+            <div class="flex flex-col items-center mx-2">
+              <div class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border cursor-pointer"
+                   style="border-width:3px;" onclick="showTimelineDetail(6)">
+                <span class="text-white font-bold text-xl">6</span>
+              </div>
+              <div class="mt-2 text-center max-w-28">
+                <p class="text-pink-800 font-semibold text-xs" style="font-family:'Sarabun',sans-serif;">
+                  ประชุมทีมวางแผนภูมิปัญญาไทย และลงมือทำเพื่อเตรียมพร้อม
+                </p>
+              </div>
+              <span class="text-2xl mt-1">🌿</span>
+            </div>
+            <div class="text-pink-400 text-2xl mx-1">→</div>
+
+            <!-- Start -->
+            <div class="flex flex-col items-center mx-2">
+              <div onclick="goToStage1()"
+                   class="timeline-circle w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center pixel-border cursor-pointer hover:from-green-500 hover:to-green-700"
+                   style="border-width:3px;">
+                <span class="text-white font-bold text-2xl">▶</span>
+              </div>
+              <div class="mt-2 text-center max-w-24">
+                <p class="text-green-700 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">เริ่มเกม!</p>
+              </div>
+              <span class="text-2xl mt-1">🎮</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="timeline-detail" class="hidden mt-4 p-4 bg-pink-50 rounded-lg pixel-border" style="border-width:2px;">
+          <h3 id="timeline-detail-title" class="text-pink-800 font-bold text-lg mb-2" style="font-family:'Sarabun',sans-serif;"></h3>
+          <p id="timeline-detail-content" class="text-pink-700" style="font-family:'Sarabun',sans-serif;"></p>
+          <button onclick="hideTimelineDetail()" class="mt-3 text-pink-500 hover:text-pink-700 underline text-sm">ปิด</button>
+        </div>
+
+        <div class="text-center mt-4">
+          <button onclick="goToCharacterSelect()" class="text-pink-500 hover:text-pink-700 underline" style="font-family:'Sarabun',sans-serif;">
+            ← ย้อนกลับ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 4: Stage 1 ===================== -->
+    <div id="screen-stage1" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-3 pixel-border" style="border-color:#FF69B4;">
+            <span class="font-bold text-xl" style="font-family:'Sarabun',sans-serif;">🏠 ด่านที่ 1 : จิตเวชชุมชน 🏠</span>
+          </div>
+          <p class="text-pink-600 mt-3" style="font-family:'Sarabun',sans-serif;">เลือกบ้านที่ต้องการเยี่ยม</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- House 1 -->
+          <div onclick="goToHouse1()" class="house-card pixel-border bg-gradient-to-b from-yellow-50 to-orange-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <svg width="120" height="120" viewBox="0 0 120 120" class="mx-auto mb-3" aria-label="house1">
+              <polygon points="60,8 8,50 112,50" fill="#8B4513" />
+              <polygon points="60,16 20,50 100,50" fill="#A0522D" />
+              <rect x="20" y="50" width="80" height="62" fill="#FFE4B5" />
+              <rect x="24" y="54" width="72" height="54" fill="#FFF8DC" />
+              <rect x="50" y="72" width="20" height="40" fill="#8B4513" />
+              <circle cx="66" cy="92" r="2" fill="#FFD700" />
+              <rect x="28" y="60" width="18" height="18" fill="#87CEEB" />
+              <rect x="74" y="60" width="18" height="18" fill="#87CEEB" />
+              <line x1="37" y1="60" x2="37" y2="78" stroke="#8B4513" stroke-width="2" />
+              <line x1="28" y1="69" x2="46" y2="69" stroke="#8B4513" stroke-width="2" />
+              <line x1="83" y1="60" x2="83" y2="78" stroke="#8B4513" stroke-width="2" />
+              <line x1="74" y1="69" x2="92" y2="69" stroke="#8B4513" stroke-width="2" />
+              <rect x="54" y="52" width="12" height="8" fill="#FFD700" />
+            </svg>
+            <h3 class="text-xl font-bold text-orange-800" style="font-family:'Sarabun',sans-serif;">🏡 หลังที่ 1</h3>
+            <p class="text-orange-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">นาย A - Paranoid Schizophrenia</p>
+            <div class="mt-3 inline-block bg-orange-200 px-3 py-1 rounded-full text-orange-700 text-xs">คลิกเพื่อดูข้อมูล</div>
+          </div>
+
+          <!-- House 2 -->
+          <div onclick="goToHouse2()" class="house-card pixel-border bg-gradient-to-b from-green-50 to-teal-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <svg width="120" height="120" viewBox="0 0 120 120" class="mx-auto mb-3" aria-label="house2">
+              <polygon points="60,8 8,50 112,50" fill="#2F4F4F" />
+              <polygon points="60,16 20,50 100,50" fill="#3C6E6E" />
+              <rect x="20" y="50" width="80" height="62" fill="#E0FFFF" />
+              <rect x="24" y="54" width="72" height="54" fill="#F0FFFF" />
+              <rect x="50" y="72" width="20" height="40" fill="#2F4F4F" />
+              <circle cx="66" cy="92" r="2" fill="#FFD700" />
+              <rect x="28" y="60" width="18" height="18" fill="#87CEEB" />
+              <rect x="74" y="60" width="18" height="18" fill="#87CEEB" />
+              <line x1="37" y1="60" x2="37" y2="78" stroke="#2F4F4F" stroke-width="2" />
+              <line x1="28" y1="69" x2="46" y2="69" stroke="#2F4F4F" stroke-width="2" />
+              <line x1="83" y1="60" x2="83" y2="78" stroke="#2F4F4F" stroke-width="2" />
+              <line x1="74" y1="69" x2="92" y2="69" stroke="#2F4F4F" stroke-width="2" />
+              <rect x="54" y="52" width="12" height="8" fill="#20B2AA" />
+            </svg>
+            <h3 class="text-xl font-bold text-teal-800" style="font-family:'Sarabun',sans-serif;">🏡 หลังที่ 2</h3>
+            <p class="text-teal-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">นาย B - Substance Induced Psychosis</p>
+            <div class="mt-3 inline-block bg-teal-200 px-3 py-1 rounded-full text-teal-700 text-xs">คลิกเพื่อดูข้อมูล</div>
+          </div>
+        </div>
+
+        <!-- ✅ เพิ่มปุ่ม “สรุปการพยาบาล” -->
+        <div class="text-center mt-2 mb-6">
+          <button onclick="goToNursingSummary()"
+                  class="pixel-btn bg-gradient-to-r from-indigo-400 to-indigo-600 text-white px-6 py-3 font-bold hover:from-indigo-500 hover:to-indigo-700"
+                  style="font-family:'Sarabun',sans-serif;">
+            📄 สรุปการพยาบาล
+          </button>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <button onclick="goToTimeline()"
+                  class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500"
+                  style="font-family:'Sarabun',sans-serif;">
+            ← ย้อนกลับ
+          </button>
+
+          <button onclick="goToStage2()"
+                  class="pixel-btn bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 font-bold hover:from-green-500 hover:to-green-700"
+                  style="font-family:'Sarabun',sans-serif;">
+            ไปด่านที่ 2 →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: สรุปการพยาบาล (NEW) ===================== -->
+    <div id="screen-summary" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-indigo-400 to-indigo-600 text-white px-6 py-2 pixel-border" style="border-color:#4F46E5;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">📄 สรุปการพยาบาล</span>
+          </div>
+          <p class="text-indigo-600 mt-2 text-sm" style="font-family:'Sarabun',sans-serif;">
+            ช่องสำหรับใส่รูปภาพ 2 รูป (ไฟล์: สรุปการพยาบาลนายA.jpg, สรุปการพยาบาลนายB.jpg)
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="pixel-border bg-indigo-50 p-4 rounded-lg text-center" style="border-width:2px;border-color:#4F46E5;">
+            <img src="สรุปการพยาบาลนายA.jpg" alt="สรุปการพยาบาลนายA"
+                 class="w-full h-72 object-contain rounded-lg mb-2"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-2">🖼️</div>
+            <p class="text-indigo-800 font-bold" style="font-family:'Sarabun',sans-serif;">สรุปการพยาบาล นาย A</p>
+          </div>
+
+          <div class="pixel-border bg-indigo-50 p-4 rounded-lg text-center" style="border-width:2px;border-color:#4F46E5;">
+            <img src="สรุปการพยาบาลนายB.jpg" alt="สรุปการพยาบาลนายB"
+                 class="w-full h-72 object-contain rounded-lg mb-2"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-2">🖼️</div>
+            <p class="text-indigo-800 font-bold" style="font-family:'Sarabun',sans-serif;">สรุปการพยาบาล นาย B</p>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button onclick="goToStage1()"
+                  class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500"
+                  style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปหน้าเลือกบ้าน
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: House 1 Detail ===================== -->
+    <div id="screen-house1" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-orange-400 to-orange-600 text-white px-6 py-2 pixel-border" style="border-color:#D2691E;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">🏡 บ้านหลังที่ 1 - นาย A 🏡</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <button onclick="showHouse1Section('patient')" class="info-card pixel-border bg-gradient-to-b from-blue-100 to-blue-200 p-4 rounded-lg text-center hover:from-blue-200 hover:to-blue-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">👤</div>
+            <p class="text-blue-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">ข้อมูลผู้ป่วย</p>
+          </button>
+
+          <button onclick="showHouse1Section('problems')" class="info-card pixel-border bg-gradient-to-b from-purple-100 to-purple-200 p-4 rounded-lg text-center hover:from-purple-200 hover:to-purple-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">📋</div>
+            <p class="text-purple-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">ปัญหา & การพยาบาล</p>
+          </button>
+
+          <button onclick="showHouse1Section('innovation')" class="info-card pixel-border bg-gradient-to-b from-green-100 to-green-200 p-4 rounded-lg text-center hover:from-green-200 hover:to-green-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">💡</div>
+            <p class="text-green-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">นวัตกรรม</p>
+          </button>
+
+          <!-- ✅ เปลี่ยนให้เป็น "รูปภาพ/วิดีโอ" ตามที่ขอ -->
+          <button onclick="showHouse1Section('images')" class="info-card pixel-border bg-gradient-to-b from-pink-100 to-pink-200 p-4 rounded-lg text-center hover:from-pink-200 hover:to-pink-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">🖼️</div>
+            <p class="text-pink-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">รูปภาพ/วิดีโอ</p>
+          </button>
+        </div>
+
+        <div id="house1-content" class="pixel-border bg-gradient-to-b from-gray-50 to-gray-100 p-4 rounded-lg min-h-64 overflow-auto scroll-container"
+             style="border-width:2px; max-height:420px;">
+          <div class="text-center text-gray-500 py-8" style="font-family:'Sarabun',sans-serif;">
+            <span class="text-4xl">👆</span>
+            <p class="mt-2">กรุณาเลือกหัวข้อด้านบนเพื่อดูรายละเอียด</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button onclick="goToStage1()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือกบ้าน
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: House 2 Detail ===================== -->
+    <div id="screen-house2" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-teal-400 to-teal-600 text-white px-6 py-2 pixel-border" style="border-color:#2F4F4F;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">🏡 บ้านหลังที่ 2 - นาย B 🏡</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <button onclick="showHouse2Section('patient')" class="info-card pixel-border bg-gradient-to-b from-blue-100 to-blue-200 p-4 rounded-lg text-center hover:from-blue-200 hover:to-blue-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">👤</div>
+            <p class="text-blue-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">ข้อมูลผู้ป่วย</p>
+          </button>
+
+          <button onclick="showHouse2Section('problems')" class="info-card pixel-border bg-gradient-to-b from-purple-100 to-purple-200 p-4 rounded-lg text-center hover:from-purple-200 hover:to-purple-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">📋</div>
+            <p class="text-purple-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">ปัญหา & การพยาบาล</p>
+          </button>
+
+          <button onclick="showHouse2Section('innovation')" class="info-card pixel-border bg-gradient-to-b from-green-100 to-green-200 p-4 rounded-lg text-center hover:from-green-200 hover:to-green-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">💡</div>
+            <p class="text-green-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">นวัตกรรม</p>
+          </button>
+
+          <button onclick="showHouse2Section('images')" class="info-card pixel-border bg-gradient-to-b from-pink-100 to-pink-200 p-4 rounded-lg text-center hover:from-pink-200 hover:to-pink-300" style="border-width:3px;">
+            <div class="text-4xl mb-2">🖼️</div>
+            <p class="text-pink-800 font-bold text-sm" style="font-family:'Sarabun',sans-serif;">รูปภาพ</p>
+          </button>
+        </div>
+
+        <div id="house2-content" class="pixel-border bg-gradient-to-b from-gray-50 to-gray-100 p-4 rounded-lg min-h-64 overflow-auto scroll-container"
+             style="border-width:2px; max-height:420px;">
+          <div class="text-center text-gray-500 py-8" style="font-family:'Sarabun',sans-serif;">
+            <span class="text-4xl">👆</span>
+            <p class="mt-2">กรุณาเลือกหัวข้อด้านบนเพื่อดูรายละเอียด</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button onclick="goToStage1()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือกบ้าน
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 5: Stage 2 - OPD ===================== -->
+    <div id="screen-stage2" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-3 pixel-border" style="border-color:#7C3AED;">
+            <span class="font-bold text-xl" style="font-family:'Sarabun',sans-serif;">🏥 ด่านที่ 2 : OPD คลินิกผู้ป่วยจิตเวช 🏥</span>
+          </div>
+          <p class="text-purple-600 mt-3" style="font-family:'Sarabun',sans-serif;">สร้างช่อง 4 ช่อง เพื่อเรียนรู้การจำแนกความผิดปกติทางจิต</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div onclick="showOPDDetail('mood')" class="house-card pixel-border bg-gradient-to-b from-yellow-50 to-yellow-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <div class="text-5xl mb-3">😢</div>
+            <h3 class="text-xl font-bold text-yellow-800" style="font-family:'Sarabun',sans-serif;">Mood Disorders</h3>
+            <p class="text-yellow-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติด้านอารมณ์ ได้แก่ ซึมเศร้า/สองขั้ว</p>
+            <div class="mt-3 inline-block bg-yellow-200 px-3 py-1 rounded-full text-yellow-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
+          </div>
+
+          <div onclick="showOPDDetail('anxiety')" class="house-card pixel-border bg-gradient-to-b from-blue-50 to-blue-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <div class="text-5xl mb-3">😰</div>
+            <h3 class="text-xl font-bold text-blue-800" style="font-family:'Sarabun',sans-serif;">Anxiety Disorders</h3>
+            <p class="text-blue-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติจากความวิตกกังวล ได้แก่ GAD/Panic/Phobia</p>
+            <div class="mt-3 inline-block bg-blue-200 px-3 py-1 rounded-full text-blue-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
+          </div>
+
+          <div onclick="showOPDDetail('neuro')" class="house-card pixel-border bg-gradient-to-b from-green-50 to-green-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <div class="text-5xl mb-3">🧠</div>
+            <h3 class="text-xl font-bold text-green-800" style="font-family:'Sarabun',sans-serif;">Neurodevelopmental</h3>
+            <p class="text-green-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติพัฒนาการ ได้แก่ ASD/ADHD/LD</p>
+            <div class="mt-3 inline-block bg-green-200 px-3 py-1 rounded-full text-green-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
+          </div>
+
+          <div onclick="showOPDDetail('substance')" class="house-card pixel-border bg-gradient-to-b from-red-50 to-red-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <div class="text-5xl mb-3">⚠️</div>
+            <h3 class="text-xl font-bold text-red-800" style="font-family:'Sarabun',sans-serif;">Substance-Related</h3>
+            <p class="text-red-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติจากสารเสพติด ได้แก่ Alcohol/Opioid/Meth</p>
+            <div class="mt-3 inline-block bg-red-200 px-3 py-1 rounded-full text-red-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
+          </div>
+        </div>
+
+        <div id="opd-detail" class="pixel-border bg-gradient-to-b from-gray-50 to-gray-100 p-4 rounded-lg min-h-64 overflow-auto scroll-container hidden"
+             style="border-width:2px; max-height:400px;">
+          <div id="opd-detail-content"></div>
+          <button onclick="hideOPDDetail()" class="mt-4 text-gray-500 hover:text-gray-700 underline text-sm">ปิด</button>
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+          <button onclick="goToStage1()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← ย้อนกลับ
+          </button>
+          <button onclick="goToStage3()" class="pixel-btn bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 font-bold hover:from-green-500 hover:to-green-700" style="font-family:'Sarabun',sans-serif;">
+            ไปด่านที่ 3 →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 6: Stage 3 - Thai Wisdom ===================== -->
+    <div id="screen-stage3" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-white px-6 py-3 pixel-border" style="border-color:#D97706;">
+            <span class="font-bold text-xl" style="font-family:'Sarabun',sans-serif;">🌿 ด่านที่ 3 : การประยุกต์ภูมิปัญญาไทย 🌿</span>
+          </div>
+          <h2 class="text-2xl font-bold text-amber-800 mt-3" style="font-family:'Sarabun',sans-serif;">หัวเรื่อง : หนูน้อยสไบแดง 🐭</h2>
+          <p class="text-amber-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">เทคนิกการควบคุมอารมณ์สำหรับเด็ก</p>
+        </div>
+
+        <!-- ✅ เพิ่มหัวหน้าใหม่: การนำภูมิปัญญาไทยมาใช้ -->
+        <div class="pixel-border bg-gradient-to-b from-amber-50 to-amber-100 p-4 rounded-lg mb-6"
+             style="border-width:2px;border-color:#D97706;">
+          <h3 class="text-lg font-bold text-amber-800 mb-2" style="font-family:'Sarabun',sans-serif;">
+            🧩 การนำภูมิปัญญาไทยมาใช้
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="bg-white p-3 rounded-lg text-center">
+              <div class="text-3xl mb-1">🧵</div>
+              <p class="text-amber-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">ผ้าไทย</p>
+              <p class="text-amber-600 text-xs" style="font-family:'Sarabun',sans-serif;">ประยุกต์ลาย/สีเป็นสื่อสร้างอัตลักษณ์และความภาคภูมิใจ</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg text-center">
+              <div class="text-3xl mb-1">🎶</div>
+              <p class="text-amber-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">ดนตรีไทย</p>
+              <p class="text-amber-600 text-xs" style="font-family:'Sarabun',sans-serif;">ใช้จังหวะ/ทำนองช่วยผ่อนคลายและจัดการอารมณ์</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg text-center">
+              <div class="text-3xl mb-1">📜</div>
+              <p class="text-amber-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">นิทานพื้นบ้านไทย</p>
+              <p class="text-amber-600 text-xs" style="font-family:'Sarabun',sans-serif;">ใช้เรื่องเล่าปลูกฝังการรู้เท่าทันอารมณ์/พฤติกรรม</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Buttons (เพิ่ม “เพลงที่ใช้ประกอบ”) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <button onclick="goToThaiWisdomDetail('origin')"
+                  class="info-card pixel-border bg-gradient-to-b from-pink-100 to-pink-200 p-6 rounded-lg text-center hover:from-pink-200 hover:to-pink-300"
+                  style="border-width:3px;">
+            <div class="text-5xl mb-3">📖</div>
+            <h3 class="text-lg font-bold text-pink-800 mb-2" style="font-family:'Sarabun',sans-serif;">ที่มา & ความสำคัญ</h3>
+            <p class="text-pink-600 text-xs" style="font-family:'Sarabun',sans-serif;">เหตุผลและกลุ่มเป้าหมาย</p>
+          </button>
+
+          <button onclick="goToThaiWisdomDetail('process')"
+                  class="info-card pixel-border bg-gradient-to-b from-green-100 to-green-200 p-6 rounded-lg text-center hover:from-green-200 hover:to-green-300"
+                  style="border-width:3px;">
+            <div class="text-5xl mb-3">⏱️</div>
+            <h3 class="text-lg font-bold text-green-800 mb-2" style="font-family:'Sarabun',sans-serif;">ขั้นตอนการทำ</h3>
+            <p class="text-green-600 text-xs" style="font-family:'Sarabun',sans-serif;">รูปแบบ Time line</p>
+          </button>
+
+          <button onclick="goToThaiWisdomDetail('media')"
+                  class="info-card pixel-border bg-gradient-to-b from-blue-100 to-blue-200 p-6 rounded-lg text-center hover:from-blue-200 hover:to-blue-300"
+                  style="border-width:3px;">
+            <div class="text-5xl mb-3">🎬</div>
+            <h3 class="text-lg font-bold text-blue-800 mb-2" style="font-family:'Sarabun',sans-serif;">ภาพประกอบ</h3>
+            <p class="text-blue-600 text-xs" style="font-family:'Sarabun',sans-serif;">สื่อประกอบการเรียนรู้</p>
+          </button>
+
+          <!-- ✅ ปุ่มใหม่: เพลงที่ใช้ประกอบ -->
+          <button onclick="goToThaiWisdomDetail('music')"
+                  class="info-card pixel-border bg-gradient-to-b from-purple-100 to-purple-200 p-6 rounded-lg text-center hover:from-purple-200 hover:to-purple-300"
+                  style="border-width:3px;">
+            <div class="text-5xl mb-3">🎵</div>
+            <h3 class="text-lg font-bold text-purple-800 mb-2" style="font-family:'Sarabun',sans-serif;">เพลงที่ใช้ประกอบ</h3>
+            <p class="text-purple-600 text-xs" style="font-family:'Sarabun',sans-serif;">กดเพื่อฟังเพลง</p>
+          </button>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <button onclick="goToStage2()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← ย้อนกลับ
+          </button>
+          <button onclick="goToEnding()" class="pixel-btn bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-3 font-bold hover:from-purple-500 hover:to-purple-700" style="font-family:'Sarabun',sans-serif;">
+            ไปหน้าปิดจบ 🎓
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: Thai Wisdom - Origin & Importance ===================== -->
+    <div id="screen-thai-origin" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2 pixel-border">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">📖 ที่มาและความสำคัญ</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="pixel-border bg-gradient-to-b from-orange-50 to-orange-100 p-4 rounded-lg" style="border-width:2px;border-color:#F97316;">
+            <h3 class="text-lg font-bold text-orange-800 mb-3 flex items-center" style="font-family:'Sarabun',sans-serif;">
+              <span class="text-2xl mr-2">🐭</span> ที่มา
+            </h3>
+            <p class="text-orange-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+              “หนูน้อยสไบแดง” เป็นนิทานพื้นบ้านไทยที่สอดแทรกการรู้เท่าทันอารมณ์และการจัดการพฤติกรรมอย่างเหมาะสม
+              สามารถนำมาประยุกต์เป็นกิจกรรมเพื่อช่วยเด็กฝึกการควบคุมอารมณ์ในชีวิตประจำวันได้
+            </p>
+          </div>
+
+          <div class="pixel-border bg-gradient-to-b from-red-50 to-red-100 p-4 rounded-lg" style="border-width:2px;border-color:#DC2626;">
+            <h3 class="text-lg font-bold text-red-800 mb-3 flex items-center" style="font-family:'Sarabun',sans-serif;">
+              <span class="text-2xl mr-2">⭐</span> ความสำคัญ
+            </h3>
+            <p class="text-red-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+              ผู้ป่วยจิตเวชเด็กมีจำนวนมาก และหลายรายไม่สามารถควบคุมอารมณ์ตัวเองได้ จึงส่งผลต่อการเรียนและความสัมพันธ์กับผู้อื่น
+              กิจกรรมจากนิทานช่วยให้เด็ก “ยอมรับอารมณ์–ระบุสาเหตุ–หาวิธีแก้ไข” อย่างเข้าใจง่ายและสนุก
+            </p>
+          </div>
+        </div>
+
+        <div class="pixel-border bg-gradient-to-b from-purple-50 to-purple-100 p-4 rounded-lg mb-6" style="border-width:2px;border-color:#7C3AED;">
+          <h3 class="text-lg font-bold text-purple-800 mb-3 flex items-center" style="font-family:'Sarabun',sans-serif;">
+            <span class="text-2xl mr-2">👥</span> กลุ่มเป้าหมาย
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="bg-white p-3 rounded-lg text-center">
+              <p class="text-purple-700 font-semibold text-sm mb-1">👧 เด็กหญิง</p>
+              <p class="text-purple-600 text-xs">ที่ไม่สามารถควบคุมอารมณ์ได้</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg text-center">
+              <p class="text-purple-700 font-semibold text-sm mb-1">👦 เด็กชาย</p>
+              <p class="text-purple-600 text-xs">ที่ไม่สามารถควบคุมอารมณ์ได้</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg text-center">
+              <p class="text-purple-700 font-semibold text-sm mb-1">🎓 ผู้ปกครอง</p>
+              <p class="text-purple-600 text-xs">ต้องการเรียนรู้และสอนเด็ก</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ✅ เพิ่ม “วิจัยสนับสนุน” แบ่ง 2 ช่อง -->
+        <div class="pixel-border bg-gradient-to-b from-amber-50 to-amber-100 p-4 rounded-lg mb-6"
+             style="border-width:2px;border-color:#D97706;">
+          <h3 class="text-lg font-bold text-amber-800 mb-3 flex items-center" style="font-family:'Sarabun',sans-serif;">
+            <span class="text-2xl mr-2">📚</span> วิจัยสนับสนุน
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg">
+              <p class="text-amber-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">
+                1) การศึกษารายกรณี: ผลการใช้นิทานเพื่อปรับพฤติกรรมก้าวร้าวในเด็กสมาธิสั้น
+              </p>
+              <p class="text-amber-600 text-xs mt-2" style="font-family:'Sarabun',sans-serif;">
+                โรงเรียนบ้านใหม่ (วันครู ๒๕๐๓) อำเภอเบตง จังหวัดยะลา
+              </p>
+            </div>
+            <div class="bg-white p-4 rounded-lg">
+              <p class="text-amber-800 font-semibold text-sm" style="font-family:'Sarabun',sans-serif;">
+                2) ละครหุ่นมือเพื่อพัฒนาทักษะการรับรู้และแสดงออกทางภาษาของเด็กที่มีความบกพร่องทางสติปัญญา
+              </p>
+              <p class="text-amber-600 text-xs mt-2" style="font-family:'Sarabun',sans-serif;">
+                HAND PUPPET SHOW DEVELOPS LANGUAGE RECOGNITION AND EXPRESSIONS SKILLS FOR MENTALLY IMPAIRED CHILD
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="goToStage3()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือก
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: Thai Wisdom - Process (Timeline) ===================== -->
+    <div id="screen-thai-process" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-2 pixel-border">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">⏱️ ขั้นตอนการทำ</span>
+          </div>
+          <p class="text-green-600 mt-2 text-sm" style="font-family:'Sarabun',sans-serif;">5 ขั้นตอน (รูปแบบ Time line)</p>
+        </div>
+
+        <div class="relative py-4 overflow-y-auto scroll-container" style="max-height:520px;">
+          <!-- Step 1 -->
+          <div class="flex mb-6">
+            <div class="flex flex-col items-center mr-6">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-500 flex items-center justify-center pixel-border" style="border-width:2px;">
+                <span class="text-white font-bold text-2xl">1</span>
+              </div>
+              <div class="w-1 h-16 bg-pink-300 mt-2"></div>
+            </div>
+            <div class="bg-pink-50 p-4 rounded-lg pixel-border flex-1" style="border-width:2px;border-color:#EC4899;">
+              <h4 class="font-bold text-pink-800 mb-1 text-lg" style="font-family:'Sarabun',sans-serif;">ขั้นที่ 1 : การปรับพื้นฐาน (Preparation)</h4>
+              <p class="text-pink-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+                เตรียมสภาพแวดล้อม สอนเด็กให้รู้จักอารมณ์ต่างๆ ผ่านนิทานหนูน้อยสไบแดง อธิบายว่าโกรธ/เศร้าเป็นเรื่องปกติ
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex mb-6">
+            <div class="flex flex-col items-center mr-6">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center pixel-border" style="border-width:2px;">
+                <span class="text-white font-bold text-2xl">2</span>
+              </div>
+              <div class="w-1 h-16 bg-orange-300 mt-2"></div>
+            </div>
+            <div class="bg-orange-50 p-4 rounded-lg pixel-border flex-1" style="border-width:2px;border-color:#F97316;">
+              <h4 class="font-bold text-orange-800 mb-1 text-lg" style="font-family:'Sarabun',sans-serif;">ขั้นที่ 2 : การยอมรับอารมณ์ (Acceptance)</h4>
+              <p class="text-orange-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+                ช่วยเด็กยอมรับอารมณ์ที่เกิดขึ้น เช่น “ตอนนี้รู้สึกโกรธใช่ไหม” เปิดโอกาสให้ระบายอย่างปลอดภัย
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex mb-6">
+            <div class="flex flex-col items-center mr-6">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center pixel-border" style="border-width:2px;">
+                <span class="text-white font-bold text-2xl">3</span>
+              </div>
+              <div class="w-1 h-16 bg-yellow-300 mt-2"></div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg pixel-border flex-1" style="border-width:2px;border-color:#EAB308;">
+              <h4 class="font-bold text-yellow-800 mb-1 text-lg" style="font-family:'Sarabun',sans-serif;">ขั้นที่ 3 : การระบุสาเหตุ (Identification)</h4>
+              <p class="text-yellow-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+                ถามแบบเปิดว่า “เกิดอะไรขึ้น” “เพราะอะไรถึงรู้สึกแบบนี้” ช่วยให้เด็กเชื่อมเหตุการณ์กับอารมณ์ได้
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex mb-6">
+            <div class="flex flex-col items-center mr-6">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center pixel-border" style="border-width:2px;">
+                <span class="text-white font-bold text-2xl">4</span>
+              </div>
+              <div class="w-1 h-16 bg-green-300 mt-2"></div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg pixel-border flex-1" style="border-width:2px;border-color:#22C55E;">
+              <h4 class="font-bold text-green-800 mb-1 text-lg" style="font-family:'Sarabun',sans-serif;">ขั้นที่ 4 : การหาวิธีแก้ไข (Problem-solving)</h4>
+              <p class="text-green-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+                ร่วมคิดทางเลือก เช่น หายใจลึก ขอความช่วยเหลือ พูดคุย หรือทำกิจกรรมที่ชอบ แล้วให้เด็กเลือกวิธีของตัวเอง
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex">
+            <div class="flex flex-col items-center mr-6">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-500 flex items-center justify-center pixel-border" style="border-width:2px;">
+                <span class="text-white font-bold text-2xl">5</span>
+              </div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg pixel-border flex-1" style="border-width:2px;border-color:#7C3AED;">
+              <h4 class="font-bold text-purple-800 mb-1 text-lg" style="font-family:'Sarabun',sans-serif;">ขั้นที่ 5 : การฝึกปฏิบัติ (Practice & Reinforcement)</h4>
+              <p class="text-purple-700 text-sm leading-relaxed" style="font-family:'Sarabun',sans-serif;">
+                ฝึกซ้ำอย่างสม่ำเสมอ ชมเชยเมื่อทำได้ ติดตามความก้าวหน้า และปรับกิจกรรมให้เหมาะกับเด็กแต่ละคน
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button onclick="goToStage3()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือก
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: Thai Wisdom - Media ===================== -->
+    <div id="screen-thai-media" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-2 pixel-border">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">🎬 ภาพ/วิดีโอประกอบ</span>
+          </div>
+        </div>
+
+        <!-- ✅ เพิ่มรูป 4 ช่อง: อุปกรณ์ ของรางวัล บรรยากาศ1 บรรยากาศ2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="pixel-border bg-gradient-to-b from-yellow-50 to-yellow-100 p-4 rounded-lg text-center" style="border-width:2px;border-color:#EAB308;">
+            <img src="อุปกรณ์.jpg" alt="อุปกรณ์" class="w-full h-44 object-cover rounded-lg mb-3" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-3">🖼️</div>
+            <p class="text-yellow-800 font-bold" style="font-family:'Sarabun',sans-serif;">อุปกรณ์</p>
+
+          </div>
+
+          <div class="pixel-border bg-gradient-to-b from-green-50 to-green-100 p-4 rounded-lg text-center" style="border-width:2px;border-color:#22C55E;">
+            <img src="ของรางวัล.jpg" alt="ของรางวัล" class="w-full h-44 object-cover rounded-lg mb-3" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-3">🖼️</div>
+            <p class="text-green-800 font-bold" style="font-family:'Sarabun',sans-serif;">ของรางวัล</p>
+          </div>
+
+          <div class="pixel-border bg-gradient-to-b from-purple-50 to-purple-100 p-4 rounded-lg text-center" style="border-width:2px;border-color:#7C3AED;">
+            <img src="บรรยากาศ1.jpg" alt="บรรยากาศ1" class="w-full h-44 object-cover rounded-lg mb-3" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-3">🖼️</div>
+            <p class="text-purple-800 font-bold" style="font-family:'Sarabun',sans-serif;">บรรยากาศ1</p>
+          </div>
+
+          <div class="pixel-border bg-gradient-to-b from-pink-50 to-pink-100 p-4 rounded-lg text-center" style="border-width:2px;border-color:#EC4899;">
+            <img src="บรรยากาศ2.jpg" alt="บรรยากาศ2" class="w-full h-44 object-cover rounded-lg mb-3" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden text-6xl mb-3">🖼️</div>
+            <p class="text-pink-800 font-bold" style="font-family:'Sarabun',sans-serif;">บรรยากาศ2</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="goToStage3()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือก
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen: Thai Wisdom - Music (NEW) ===================== -->
+    <div id="screen-thai-music" class="min-h-full w-full flex flex-col items-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-4xl w-full">
+        <div class="text-center mb-6">
+          <div class="inline-block bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-2 pixel-border" style="border-color:#7C3AED;">
+            <span class="font-bold text-lg" style="font-family:'Sarabun',sans-serif;">🎵 เพลงที่ใช้ประกอบ</span>
+          </div>
+          <p class="text-purple-600 mt-2 text-xs" style="font-family:'Sarabun',sans-serif;">
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" style="font-family:'Sarabun',sans-serif;">
+
+          <div class="pixel-border bg-purple-50 p-4 rounded-lg text-center" style="border-width:2px;border-color:#7C3AED;">
+            <p class="font-bold text-purple-800 text-sm mb-3">
+              ดนตรีบรรเลงประกอบฉาก บุพเพสันนิวาส Feel Good
+            </p>
+            <audio controls class="w-full">
+              <source src="บุพเพสันนิวาส_FeelGood.mp3" type="audio/mpeg">
+              เบราว์เซอร์ของคุณไม่รองรับการเล่นเพลง
+            </audio>
+          </div>
+
+          <div class="pixel-border bg-purple-50 p-4 rounded-lg text-center" style="border-width:2px;border-color:#7C3AED;">
+            <p class="font-bold text-purple-800 text-sm mb-3">
+              ดนตรีไทยสร้างสรรค์ - Thai Music Creative
+            </p>
+            <audio controls class="w-full">
+              <source src="Thai_Music_Creative.mp3" type="audio/mpeg">
+              เบราว์เซอร์ของคุณไม่รองรับการเล่นเพลง
+            </audio>
+          </div>
+
+          <div class="pixel-border bg-purple-50 p-4 rounded-lg text-center" style="border-width:2px;border-color:#7C3AED;">
+            <p class="font-bold text-purple-800 text-sm mb-3">
+              ดนตรีไทยประยุกต์ - ซาวด์การแสดงนาฏศิลป์สร้างสรรค์ (อินทรชิต)
+            </p>
+            <audio controls class="w-full">
+              <source src="อินทรชิต_ซาวด์นาฏศิลป์สร้างสรรค์.mp3" type="audio/mpeg">
+              เบราว์เซอร์ของคุณไม่รองรับการเล่นเพลง
+            </audio>
+          </div>
+
+        </div>
+
+        <div class="text-center">
+          <button onclick="goToStage3()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
+            ← กลับไปเลือก
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== Screen 7: Ending ===================== -->
+    <div id="screen-ending" class="min-h-full w-full flex flex-col items-center justify-center p-4 hidden">
+      <div class="pixel-border bg-white/90 backdrop-blur-sm rounded-lg p-8 max-w-lg w-full text-center relative">
+        <div class="absolute top-4 left-4 text-5xl">✨</div>
+        <div class="absolute top-4 right-4 text-5xl">🌟</div>
+        <div class="absolute bottom-4 left-4 text-5xl">🎉</div>
+        <div class="absolute bottom-4 right-4 text-5xl">🎊</div>
+
+        <div class="relative z-10">
+          <div class="mb-6">
+            <div class="inline-block bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-3 pixel-border" style="border-color:#FF69B4;">
+              <span class="font-bold text-xl tracking-wider" style="font-family:'Sarabun',sans-serif;">🎓 ยินดีด้วย! 🎓</span>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <p id="ending-player-name" class="text-3xl font-bold text-pink-600" style="font-family:'Sarabun',sans-serif;">นักศึกษา</p>
+          </div>
+
+          <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg p-4 pixel-border mb-6" style="border-width:2px;border-color:#EAB308;">
+            <p class="text-pink-800 font-bold mb-2 text-lg" style="font-family:'Sarabun',sans-serif;">🏆 ผ่านการฝึกปฏิบัติสำเร็จ! 🏆</p>
+            <p class="text-pink-700 text-sm" style="font-family:'Sarabun',sans-serif;">
+              ขอบคุณที่ทำการฝึกปฏิบัติทั้ง 3 ด่าน คุณได้เรียนรู้การดูแลผู้ป่วยจิตเวช ตั้งแต่ชุมชน OPD ไปจนถึงภูมิปัญญาไทย
+            </p>
+          </div>
+
+          <!-- ✅ รูป “นิสิตพยาบาลพนมมือสวัสดี” (ตัวละครเดิมแนว pixel) -->
+          <div class="mb-6">
+            <svg width="120" height="150" viewBox="0 0 120 150" class="mx-auto" aria-label="wai nurse">
+              <rect x="36" y="16" width="48" height="44" fill="#FFE4C4" />
+              <rect x="28" y="8" width="64" height="16" fill="#2C1810" />
+              <rect x="28" y="8" width="12" height="52" fill="#2C1810" />
+              <rect x="80" y="8" width="12" height="52" fill="#2C1810" />
+              <!-- arms -->
+              <rect x="32" y="60" width="8" height="40" fill="#FFE4C4" transform="rotate(-30 36 60)" />
+              <rect x="80" y="60" width="8" height="40" fill="#FFE4C4" transform="rotate(30 84 60)" />
+              <polygon points="50,45 60,40 65,50 55,55" fill="#FFE4C4" />
+              <!-- body -->
+              <rect x="28" y="60" width="64" height="60" fill="#FFFFFF" />
+              <rect x="40" y="64" width="40" height="8" fill="#FFB6C1" />
+              <!-- legs -->
+              <rect x="36" y="120" width="14" height="20" fill="#FFE4C4" />
+              <rect x="70" y="120" width="14" height="20" fill="#FFE4C4" />
+              <!-- shoes -->
+              <rect x="32" y="140" width="18" height="8" fill="#FF69B4" />
+              <rect x="70" y="140" width="18" height="8" fill="#FF69B4" />
+              <!-- halo -->
+              <circle cx="60" cy="8" r="20" fill="none" stroke="#FFD700" stroke-width="2" />
+            </svg>
+          </div>
+
+          <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 pixel-border mb-6" style="border-width:2px;border-color:#7C3AED;">
+            <p class="text-purple-800 font-bold text-lg mb-1" style="font-family:'Sarabun',sans-serif;">👨‍🎓 กลุ่ม 03-17 👩‍🎓</p>
+            <p class="text-purple-700 text-sm" style="font-family:'Sarabun',sans-serif;">ขอบคุณค่ะ/ครับ</p>
+          </div>
+
+          <div class="mb-6">
+            <p class="text-pink-800 font-bold text-2xl mb-2" style="font-family:'Sarabun',sans-serif;">ขอบคุณค่ะ/ครับ 🙏</p>
+            <p class="text-pink-600 text-sm" style="font-family:'Sarabun',sans-serif;">ขอให้มีสุขภาพจิตที่ดี และเป็นพยาบาลที่ดีได้ตลอดไป</p>
+          </div>
+
+          <div class="flex justify-center gap-3 text-2xl mb-6"><span>💮</span><span>🌸</span><span>🪷</span><span>🌸</span><span>💮</span></div>
+
+          <button onclick="goToWelcome()"
+                  class="pixel-btn bg-gradient-to-r from-pink-400 to-pink-500 text-white px-8 py-4 text-lg font-bold w-full hover:from-pink-500 hover:to-pink-600"
+                  style="font-family:'Sarabun',sans-serif;">
+            🎮 เล่นใหม่ 🎮
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- ===================== Modal: Video (House1) ===================== -->
+  <div id="videoModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="pixel-border bg-white/95 rounded-lg p-4 w-full max-w-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-pink-800 font-bold text-lg" style="font-family:'Sarabun',sans-serif;">
+          📺 โทรทัศน์สัญญาณเตือนจิตเวชฉุกเฉิน
+        </h3>
+        <button onclick="closeVideoModal()" class="text-pink-500 hover:text-pink-700 underline" style="font-family:'Sarabun',sans-serif;">ปิด</button>
+      </div>
+
+      <!-- ✅ วางไฟล์วิดีโอชื่อ: โทรทัศน์สัญญาณเตือนจิตเวชฉุกเฉิน.mp4 ไว้โฟลเดอร์เดียวกับ HTML -->
+      <video id="house1Video" controls class="w-full rounded-lg bg-black">
+        <source src="โทรทัศน์สัญญาณเตือนจิตเวชฉุกเฉิน.mp4" type="video/mp4" />
+        เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
+      </video>
+
+      <p class="text-gray-500 text-xs mt-2" style="font-family:'Sarabun',sans-serif;">
+        *ถ้าวิดีโอไม่ขึ้น ให้ตรวจสอบชื่อไฟล์และตำแหน่งไฟล์ให้ตรงกับที่ระบุ
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // ===================== Game State =====================
+    let gameState = { playerName: '', selectedCharacter: null, currentScreen: 'screen-welcome' };
+
+    // ===================== Navigation =====================
+    function hideAllScreens(){
+      document.querySelectorAll('[id^="screen-"]').forEach(s => s.classList.add('hidden'));
+    }
+    function showScreen(id){
+      hideAllScreens();
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+      gameState.currentScreen = id;
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function goToWelcome(){ showScreen('screen-welcome'); }
+    function goToCharacterSelect(){
+      gameState.playerName = document.getElementById('player-name').value.trim() || 'นักศึกษา';
+      document.getElementById('player-greeting').textContent = `สวัสดี ${gameState.playerName}! 🌸`;
+      showScreen('screen-character');
+    }
+    function selectCharacter(n){
+      gameState.selectedCharacter = n;
+      document.getElementById('char-1').classList.remove('selected');
+      document.getElementById('char-2').classList.remove('selected');
+      document.getElementById(`char-${n}`).classList.add('selected');
+      document.getElementById('selection-status').classList.remove('hidden');
+      document.getElementById('continue-btn').classList.remove('hidden');
+    }
+    function goToTimeline(){ showScreen('screen-timeline'); }
+    function goToStage1(){ showScreen('screen-stage1'); }
+    function goToStage2(){ showScreen('screen-stage2'); }
+    function goToStage3(){ showScreen('screen-stage3'); }
+    function goToEnding(){
+      document.getElementById('ending-player-name').textContent = gameState.playerName || 'นักศึกษา';
+      showScreen('screen-ending');
+    }
+    function goToThaiWisdomDetail(type){
+      if(type === 'origin') showScreen('screen-thai-origin');
+      if(type === 'process') showScreen('screen-thai-process');
+      if(type === 'media') showScreen('screen-thai-media');
+      if(type === 'music') showScreen('screen-thai-music'); // ✅ เพิ่มหน้าเพลง
+    }
+
+    // ✅ ปุ่มสรุปการพยาบาล
+    function goToNursingSummary(){
+      showScreen('screen-summary');
+    }
+
+    // ===================== Timeline detail =====================
+    const timelineDetails = {
+      1:{title:'📅 ประชุมทีม', content:'ประชุมวางแผนการทำงานร่วมกับทีมสหสาขาวิชาชีพ เพื่อเตรียมความพร้อมก่อนลงพื้นที่'},
+      2:{title:'🏠 ลงปฏิบัติการชุมชน', content:'เยี่ยมบ้านผู้ป่วยจิตเวชในชุมชน สำรวจปัญหา ประเมินสภาพ และวางแผนการพยาบาล'},
+      3:{title:'💡 ลงมือทำนวัตกรรม', content:'พัฒนานวัตกรรมที่เหมาะสมกับปัญหาของผู้ป่วยแต่ละราย เพื่อนำไปใช้ในการดูแล'},
+      4:{title:'📋 ปฏิบัติตามแผน', content:'นำแผนการพยาบาลและนวัตกรรมไปปฏิบัติจริงกับผู้ป่วยและผู้ดูแล'},
+      5:{title:'🏥 ฝึก OPD', content:'ขึ้นฝึกปฏิบัติงานที่แผนกผู้ป่วยนอกจิตเวช เรียนรู้การดูแลผู้ป่วยในระบบบริการสุขภาพ'},
+      6:{title:'🌿 ภูมิปัญญาไทย', content:'ประชุมวางแผนและเตรียมกิจกรรมส่งเสริมสุขภาพจิตด้วยภูมิปัญญาไทย'}
+    };
+    function showTimelineDetail(num){
+      const d = timelineDetails[num];
+      if(!d) return;
+      document.getElementById('timeline-detail-title').textContent = d.title;
+      document.getElementById('timeline-detail-content').textContent = d.content;
+      document.getElementById('timeline-detail').classList.remove('hidden');
+      document.getElementById('timeline-detail').scrollIntoView({behavior:'smooth'});
+    }
+    function hideTimelineDetail(){
+      document.getElementById('timeline-detail').classList.add('hidden');
+    }
+
+    // ===================== OPD detail =====================
+    const opdDetails = {
+      mood:{
+        content: `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-lg font-bold text-yellow-800 mb-3">😢 Mood Disorders (ความผิดปกติด้านอารมณ์)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-yellow-50 p-4 rounded-lg">
+                <p class="font-bold text-yellow-800 mb-2">ตัวอย่างโรค</p>
+                <ul class="text-yellow-700 text-sm space-y-1">
+                  <li>• Major Depressive Disorder (ภาวะซึมเศร้า)</li>
+                  <li>• Bipolar Disorder (ภาวะสองขั้ว)</li>
+                  <li>• Persistent Depressive Disorder (ซึมเศร้าเรื้อรัง)</li>
+                </ul>
+              </div>
+              <div class="bg-orange-50 p-4 rounded-lg">
+                <p class="font-bold text-orange-800 mb-2">สัญญาณสำคัญ</p>
+                <ul class="text-orange-700 text-sm space-y-1">
+                  <li>• อารมณ์เศร้า/หงุดหงิดต่อเนื่อง</li>
+                  <li>• การนอนและความอยากอาหารเปลี่ยน</li>
+                  <li>• สนใจสิ่งเดิมลดลง</li>
+                  <li>• รู้สึกไร้ค่า/หมดหวัง</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+      anxiety:{
+        content: `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-lg font-bold text-blue-800 mb-3">😰 Anxiety Disorders (ความผิดปกติจากความวิตกกังวล)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <p class="font-bold text-blue-800 mb-2">ตัวอย่างโรค</p>
+                <ul class="text-blue-700 text-sm space-y-1">
+                  <li>• Generalized Anxiety Disorder (GAD)</li>
+                  <li>• Panic Disorder</li>
+                  <li>• Specific Phobia</li>
+                  <li>• OCD (อาจพบร่วม)</li>
+                </ul>
+              </div>
+              <div class="bg-cyan-50 p-4 rounded-lg">
+                <p class="font-bold text-cyan-800 mb-2">สัญญาณสำคัญ</p>
+                <ul class="text-cyan-700 text-sm space-y-1">
+                  <li>• กังวลมาก ควบคุมยาก</li>
+                  <li>• ใจสั่น เหงื่อออก หายใจไม่อิ่ม</li>
+                  <li>• หลีกเลี่ยงสิ่งกระตุ้น</li>
+                  <li>• นอนหลับยาก สมาธิลดลง</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+      neuro:{
+        content: `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-lg font-bold text-green-800 mb-3">🧠 Neurodevelopmental Disorders (ความผิดปกติพัฒนาการ)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-green-50 p-4 rounded-lg">
+                <p class="font-bold text-green-800 mb-2">ตัวอย่างโรค</p>
+                <ul class="text-green-700 text-sm space-y-1">
+                  <li>• Autism Spectrum Disorder (ASD)</li>
+                  <li>• ADHD</li>
+                  <li>• Learning Disorder (LD)</li>
+                  <li>• Intellectual Disability</li>
+                </ul>
+              </div>
+              <div class="bg-lime-50 p-4 rounded-lg">
+                <p class="font-bold text-lime-800 mb-2">สัญญาณสำคัญ</p>
+                <ul class="text-lime-700 text-sm space-y-1">
+                  <li>• สื่อสาร/ปฏิสัมพันธ์ทางสังคมยาก</li>
+                  <li>• พฤติกรรมซ้ำ สนใจจำกัด</li>
+                  <li>• สมาธิสั้น หุนหันพลันแล่น</li>
+                  <li>• การเรียนรู้ด้านอ่าน/เขียน/คำนวณบกพร่อง</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+      substance:{
+        content: `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-lg font-bold text-red-800 mb-3">⚠️ Substance-Related Disorders (ความผิดปกติจากสารเสพติด)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-red-50 p-4 rounded-lg">
+                <p class="font-bold text-red-800 mb-2">ตัวอย่าง</p>
+                <ul class="text-red-700 text-sm space-y-1">
+                  <li>• Alcohol Use Disorder</li>
+                  <li>• Opioid Use Disorder</li>
+                  <li>• Methamphetamine Use Disorder</li>
+                  <li>• Substance Induced Psychosis</li>
+                </ul>
+              </div>
+              <div class="bg-rose-50 p-4 rounded-lg">
+                <p class="font-bold text-rose-800 mb-2">สัญญาณสำคัญ</p>
+                <ul class="text-rose-700 text-sm space-y-1">
+                  <li>• อยากใช้สารแรง/คุมไม่ได้</li>
+                  <li>• ใช้เพิ่มขึ้นเรื่อย ๆ</li>
+                  <li>• กระทบงาน/ครอบครัว/สุขภาพ</li>
+                  <li>• มีอาการถอน/อาการทางจิตจากสาร</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      }
+    };
+    function showOPDDetail(type){
+      const box = document.getElementById('opd-detail');
+      const content = document.getElementById('opd-detail-content');
+      if(!opdDetails[type]) return;
+      content.innerHTML = opdDetails[type].content;
+      box.classList.remove('hidden');
+      box.scrollIntoView({behavior:'smooth'});
+    }
+    function hideOPDDetail(){
+      document.getElementById('opd-detail').classList.add('hidden');
+    }
+
+    // ===================== House navigation =====================
+    function goToHouse1(){
+      showScreen('screen-house1');
+      document.getElementById('house1-content').innerHTML = `
+        <div class="text-center text-gray-500 py-8" style="font-family:'Sarabun',sans-serif;">
+          <span class="text-4xl">👆</span>
+          <p class="mt-2">กรุณาเลือกหัวข้อด้านบนเพื่อดูรายละเอียด</p>
+        </div>`;
+    }
+    function goToHouse2(){
+      showScreen('screen-house2');
+      document.getElementById('house2-content').innerHTML = `
+        <div class="text-center text-gray-500 py-8" style="font-family:'Sarabun',sans-serif;">
+          <span class="text-4xl">👆</span>
+          <p class="mt-2">กรุณาเลือกหัวข้อด้านบนเพื่อดูรายละเอียด</p>
+        </div>`;
+    }
+
+    // ===================== House 1 Content =====================
+    function showHouse1Section(section){
+      const contentDiv = document.getElementById('house1-content');
+      if(section === 'patient'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center"><span class="text-2xl mr-2">👤</span> ข้อมูลผู้ป่วย</h3>
+            <div class="space-y-4">
+              <div class="bg-blue-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#3B82F6;">
+                <p class="text-blue-700"><strong>ชื่อ:</strong> นาย A (นามสมมุติ)</p>
+              </div>
+              <div class="bg-purple-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#8B5CF6;">
+                <p class="text-purple-700"><strong>การวินิจฉัย:</strong> Paranoid Schizophrenia</p>
+              </div>
+              <div class="bg-pink-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#EC4899;">
+                <p class="text-pink-800 font-bold mb-2">📋 ประวัติการเจ็บป่วยในปัจจุบัน:</p>
+                <p class="text-pink-700 text-sm leading-relaxed">
+                  ผู้ป่วยรู้สึกตัวดี รับรู้บุคคล เวลา สถานที่ พูดคุยรู้เรื่อง
+                  มีอาการหูแว่ว/เห็นภาพหลอนเล็กน้อยแต่สามารถจัดการได้
+                  ไม่มีความคิดหลงผิด อารมณ์คงที่ ไม่แสดงพฤติกรรมที่เป็นอันตรายต่อตนเองและผู้อื่น
+                </p>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'problems'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-purple-800 mb-4 flex items-center"><span class="text-2xl mr-2">📋</span> ปัญหาและการพยาบาล</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-blue-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#3B82F6;">
+                <h4 class="font-bold text-blue-800 mb-3 text-lg">👤 ผู้ป่วย</h4>
+                <p class="font-semibold text-blue-700 mb-2">🔴 ปัญหา:</p>
+                <ol class="list-decimal list-inside text-blue-600 text-sm space-y-1">
+                  <li>ผู้ป่วยมีการเผชิญปัญหาไม่เหมาะสม เนื่องจากความผิดปกติของความคิด</li>
+                  <li>การดูแลตนเองบกพร่องเนื่องจากมีความเชื่อด้านสุขภาพที่ผิด</li>
+                  <li>มีความวิตกกังวลเกี่ยวกับเหตุการณ์ที่ผ่านมา</li>
+                </ol>
+                <p class="font-semibold text-green-700 mt-4 mb-2">💚 การพยาบาลที่ได้รับ:</p>
+                <ol class="list-decimal list-inside text-green-600 text-sm space-y-1">
+                  <li>การควบคุมอารมณ์และความคิด</li>
+                  <li>การดูแลสุขภาพและลดพฤติกรรมเสี่ยง</li>
+                  <li>การลดความวิตกกังวล</li>
+                </ol>
+              </div>
+
+              <div class="bg-orange-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#F97316;">
+                <h4 class="font-bold text-orange-800 mb-3 text-lg">👥 ผู้ดูแล</h4>
+                <p class="font-semibold text-orange-700 mb-2">🔴 ปัญหา:</p>
+                <ol class="list-decimal list-inside text-orange-600 text-sm space-y-1">
+                  <li>ผู้ดูแลวิตกกังวล เนื่องจากขาดความรู้และความเข้าใจเกี่ยวกับโรคจิตเวชและการดูแลรักษา</li>
+                  <li>ผู้ดูแลมีความรู้ไม่เพียงพอเกี่ยวกับสัญญาณเตือนภาวะจิตเวชฉุกเฉิน</li>
+                  <li>เสี่ยงต่อการเกิดภาวะโดดเดี่ยวทางสังคม</li>
+                  <li>เสี่ยงต่อการเกิดภาวะแทรกซ้อนจากการใช้ยา</li>
+                </ol>
+                <p class="font-semibold text-green-700 mt-4 mb-2">💚 การพยาบาลที่ได้รับ:</p>
+                <ol class="list-decimal list-inside text-green-600 text-sm space-y-1">
+                  <li>ให้ความรู้เกี่ยวกับโรค</li>
+                  <li>สอนสัญญาณเตือนภาวะฉุกเฉิน</li>
+                  <li>ลดภาระและความวิตกกังวลผู้ดูแล</li>
+                </ol>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'innovation'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
+              <span class="text-2xl mr-2">💡</span> นวัตกรรมที่นำไปใช้
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- ✅ สำหรับผู้ป่วย: แบ่ง 4 ช่อง -->
+              <div class="bg-gradient-to-b from-green-50 to-green-100 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#22C55E;">
+                <h4 class="font-bold text-green-800 mb-3">👤 สำหรับผู้ป่วย</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div class="bg-white p-3 rounded-lg text-center">
+                    <p class="text-green-800 font-semibold text-sm">🌀 วงล้อระดับอารมณ์</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg text-center">
+                    <p class="text-green-800 font-semibold text-sm">🌬 เทคนิคหายใจ 4-4-6</p>
+                    <p class="text-gray-500 text-xs mt-1">หายใจเข้า 4 วินาที กลั้น 4 วินาที เป่าออก 6 วินาที</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg text-center">
+                    <p class="text-green-800 font-semibold text-sm">🤲 ลูกบอลคลายเครียด</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg text-center">
+                    <p class="text-green-800 font-semibold text-sm">🧘 Grounding Technique</p>
+                    <p class="text-gray-500 text-xs mt-1">5-4-3-2-1 ดึงสติกลับมาอยู่กับปัจจุบัน</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ✅ สำหรับผู้ดูแล: ข้อมูลเดิม -->
+              <div class="bg-gradient-to-b from-teal-50 to-teal-100 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#14B8A6;">
+                <h4 class="font-bold text-teal-800 mb-2">👥 สำหรับผู้ดูแล</h4>
+                <p class="text-teal-700 text-sm">โทรทัศน์สัญญาณเตือนจิตเวชฉุกเฉิน (สื่อให้ความรู้สัญญาณเตือน)</p>
+                <p class="text-yellow-800 text-xs mt-3"><strong>📚 วิจัยสนับสนุน:</strong> The Effectiveness of Family Psychological Training Program Applied to Relatives of Patients with Schizophrenia</p>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'images'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-pink-800 mb-4 flex items-center justify-center"><span class="text-2xl mr-2">🖼️</span> รูปภาพประกอบ (บ้านหลังที่ 1)</h3>
+
+            <!-- ✅ 3 ช่อง รูป 3 รูป: นวัตกรรมที่ใช้กับผู้ป่วยA นวัตกรรมที่ใช้กับผู้ดูแลA นวัตกรรมA -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+              ${['นวัตกรรมที่ใช้กับผู้ป่วยA','นวัตกรรมที่ใช้กับผู้ดูแลA','นวัตกรรมA'].map(name => `
+                <div class="pixel-border bg-pink-50 p-3 rounded-lg text-center" style="border-width:2px;border-color:#EC4899;">
+                  <img src="${name}.jpg" alt="${name}" class="w-full h-32 object-cover rounded-lg mb-2"
+                       onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                  <div class="hidden text-5xl mb-2">📷</div>
+                  <p class="text-pink-800 font-bold text-sm">${name}</p>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- ✅ ปุ่มดูคลิปวิดีโอ -->
+            <div class="text-center mb-2">
+              <button onclick="openVideoModal()" class="pixel-btn bg-gradient-to-r from-pink-400 to-pink-500 text-white px-6 py-3 font-bold hover:from-pink-500 hover:to-pink-600"
+                      style="font-family:'Sarabun',sans-serif;">
+                ▶ ดูคลิป: โทรทัศน์สัญญาณเตือนจิตเวชฉุกเฉิน
+              </button>
+              <p class="text-gray-500 text-xs mt-2" style="font-family:'Sarabun',sans-serif;"></p>
+            </div>
+          </div>`;
+      }
+    }
+
+    // ===================== House 2 Content (อัปเดตตามข้อมูลที่ให้) =====================
+    function showHouse2Section(section){
+      const contentDiv = document.getElementById('house2-content');
+
+      if(section === 'patient'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center"><span class="text-2xl mr-2">👤</span> ข้อมูลผู้ป่วย</h3>
+
+            <div class="space-y-4">
+              <div class="bg-blue-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#3B82F6;">
+                <p class="text-blue-700"><strong>ชื่อ:</strong> นาย B (นามสมมุติ)</p>
+              </div>
+
+              <div class="bg-purple-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#8B5CF6;">
+                <p class="text-purple-700"><strong>การวินิจฉัย:</strong> Substance Induced Psychosis</p>
+              </div>
+
+              <div class="bg-pink-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#EC4899;">
+                <p class="text-pink-800 font-bold mb-2">📋 ประวัติการเจ็บป่วยในปัจจุบัน:</p>
+                <p class="text-pink-700 text-sm leading-relaxed">
+                  ผู้ป่วยเคยมีการใช้สารเสพติดจนกระทบต่อการใช้ชีวิต โดยเฉพาะทำให้สูญเสียงานปัจจุบัน
+                  ปัจจุบันผู้ป่วยหยุดใช้สารเสพติดแล้ว และเข้ารับการรักษาอย่างต่อเนื่อง อาการทางจิตดีขึ้น
+                  ไม่พบหูแว่วหรือภาพหลอนแล้ว นอนหลับได้ดี ไม่มีอาการวิตกกังวลหรือซึมเศร้า
+                  สามารถช่วยงานที่บ้านและใช้ชีวิตประจำวันได้ตามปกติ อีกทั้งผู้ป่วยรับรู้ว่าตนเองป่วยและเข้าใจผลกระทบของการใช้สารเสพติด
+                </p>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'problems'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-purple-800 mb-4 flex items-center"><span class="text-2xl mr-2">📋</span> ปัญหาและการพยาบาล</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- ผู้ป่วย -->
+              <div class="bg-blue-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#3B82F6;">
+                <h4 class="font-bold text-blue-800 mb-3 text-lg">👤 ผู้ป่วย</h4>
+                <p class="font-semibold text-blue-700 mb-2">🔴 ปัญหา:</p>
+                <ol class="list-decimal list-inside text-blue-600 text-sm space-y-1">
+                  <li>มีอาการไม่พึงประสงค์จากยาเนื่องจากรับประทานยาจิตเวช</li>
+                  <li>เสี่ยงต่อการกลับไปใช้สารเสพติดซ้ำเนื่องจากขาดความรู้ในการป้องกันการกลับไปเสพสารเสพติดซ้ำ</li>
+                  <li>ส่งเสริมบทบาทการทำงานเนื่องจากขาดความมั่นใจในตนเอง</li>
+                </ol>
+
+                <p class="font-semibold text-green-700 mt-4 mb-2">💚 การพยาบาลที่ได้รับ:</p>
+                <ol class="list-decimal list-inside text-green-600 text-sm space-y-1">
+                  <li>ให้คำแนะนำผู้ป่วยเกี่ยวกับการดูแลความไม่สุขสบายจากการรับประทานยา</li>
+                  <li>ให้ความรู้เกี่ยวกับผลกระทบของยาเสพติดทั้งด้านร่างกาย จิตใจ ครอบครัว และสังคม</li>
+                  <li>ส่งเสริมการรับรู้คุณค่าในตนเอง (Self-esteem)</li>
+                </ol>
+              </div>
+
+              <!-- ผู้ดูแล -->
+              <div class="bg-orange-50 p-4 rounded-lg pixel-border" style="border-width:2px;border-color:#F97316;">
+                <h4 class="font-bold text-orange-800 mb-3 text-lg">👥 ผู้ดูแล</h4>
+                <p class="font-semibold text-orange-700 mb-2">🔴 ปัญหา:</p>
+                <ol class="list-decimal list-inside text-orange-600 text-sm space-y-1">
+                  <li>มีความวิตกกังวลเนื่องจากอาการเจ็บป่วยของตนเอง</li>
+                </ol>
+
+                <p class="font-semibold text-green-700 mt-4 mb-2">💚 การพยาบาลที่ได้รับ:</p>
+                <ol class="list-decimal list-inside text-green-600 text-sm space-y-1">
+                  <li>เปิดโอกาสให้ผู้ดูแลได้ระบายความรู้สึก และให้คำแนะนำในการดูแลสุขภาพตนเอง</li>
+                </ol>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'innovation'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center"><span class="text-2xl mr-2">💡</span> นวัตกรรมที่นำไปใช้</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- ช่องที่ 1 ผู้ป่วย -->
+              <div class="pixel-border bg-gradient-to-b from-green-50 to-green-100 p-4 rounded-lg" style="border-width:2px;border-color:#22C55E;">
+                <h4 class="font-bold text-green-800 mb-2">ช่องที่ 1 : ผู้ป่วย</h4>
+                <p class="text-green-700 text-sm mb-2"><strong>ปัญหา:</strong> เสี่ยงต่อการกลับไปใช้สารเสพติดซ้ำเนื่องจากขาดความรู้ในการป้องกันการกลับไปเสพสารเสพติดซ้ำ</p>
+                <p class="text-green-700 text-sm mb-3"><strong>นวัตกรรมที่นำไปใช้:</strong> บอร์ดเกม “ผจญภัยสู่ชีวิตไร้ยาเสพติด”</p>
+
+                <div class="bg-white p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold text-sm mb-1">📚 วิจัยสนับสนุน (2 ช่อง)</p>
+                  <div class="grid grid-cols-1 gap-2">
+                    <div class="bg-green-50 p-2 rounded">
+                      <p class="text-xs text-green-800">
+                        • Gamified adaptive approach bias modification in individuals with methamphetamine use history from communities in Sichuan: A pilot RCT
+                      </p>
+                    </div>
+                    <div class="bg-green-50 p-2 rounded">
+                      <p class="text-xs text-green-800">
+                        • การพัฒนาและผลของโปรแกรมการเสริมสร้างพลังอำนาจต่อพฤติกรรมการกำกับตนเองเพื่อการเลิกยาเสพติดของผู้ป่วยยาเสพติดแอมเฟตามีนในระยะฟื้นฟูสมรรถภาพ
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ช่องที่ 2 ผู้ดูแล -->
+              <div class="pixel-border bg-gradient-to-b from-teal-50 to-teal-100 p-4 rounded-lg" style="border-width:2px;border-color:#14B8A6;">
+                <h4 class="font-bold text-teal-800 mb-2">ช่องที่ 2 : ผู้ดูแล</h4>
+                <p class="text-teal-700 text-sm mb-2"><strong>ปัญหา:</strong> มีความวิตกกังวลเนื่องจากอาการเจ็บป่วยของตนเอง</p>
+
+                <div class="grid grid-cols-1 gap-3">
+                  <div class="bg-white p-3 rounded-lg">
+                    <p class="text-teal-800 font-semibold text-sm">🧾 โปสเตอร์ให้ความรู้เรื่องโรคหลอดเลือดสมอง</p>
+                    <p class="text-teal-600 text-xs">อาการเตือนตามหลัก BEFAST</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg">
+                    <p class="text-teal-800 font-semibold text-sm">💊 โปสเตอร์ให้ความรู้เรื่องผลข้างเคียงจากยาจิตเวช</p>
+                    <p class="text-teal-600 text-xs">แนวทางสังเกตและดูแลเบื้องต้น</p>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-lg mt-3">
+                  <p class="text-teal-800 font-semibold text-sm mb-1">📚 วิจัยสนับสนุน (2 ช่อง)</p>
+                  <div class="grid grid-cols-1 gap-2">
+                    <div class="bg-teal-50 p-2 rounded">
+                      <p class="text-xs text-teal-800">• บทความเรื่องภาวะเหนื่อยล้าในผู้ดูแลผู้สูงอายุ</p>
+                    </div>
+                    <div class="bg-teal-50 p-2 rounded">
+                      <p class="text-xs text-teal-800">
+                        • ความสัมพันธ์ระหว่างปัจจัยกับผลลัพธ์ที่ดีทางสมองของผู้ป่วยโรคหลอดเลือดสมองเฉียบพลันในช่องทางด่วน (Stroke Fast track)
+                        ชนิดโรคหลอดเลือดสมองตีบหรืออุดตันและได้รับการรักษาด้วยยา rt-PA ที่ส่งมารักษาต่อ (Refer)
+                        ที่ห้องอุบัติเหตุและฉุกเฉิน โรงพยาบาลเทพรัตน์นครราชสีมา
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if(section === 'images'){
+        contentDiv.innerHTML = `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-xl font-bold text-pink-800 mb-4 flex items-center justify-center"><span class="text-2xl mr-2">🖼️</span> รูปภาพประกอบ (บ้านหลังที่ 2)</h3>
+
+            <!-- ✅ 4 ช่อง รูป 4 รูป : นวัตกรรมที่ใช้กับผู้ป่วยB  นวัตกรรมที่ใช้กับผู้ดูแลB1 นวัตกรรมที่ใช้กับผู้ดูแลB2 ภาพการนำไปใช้จริงกับผู้ป่วยB -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${['นวัตกรรมที่ไปใช้กับผู้ป่วยB','นวัตกรรมที่ใช้กับผู้ดูแลB1','นวัตกรรมที่ใช้กับผู้ดูแลB2','ภาพการนำไปใช้จริงกับผู้ป่วยB'].map(name => `
+                <div class="pixel-border bg-pink-50 p-3 rounded-lg text-center" style="border-width:2px;border-color:#EC4899;">
+                  <img src="${name}.jpg" alt="${name}" class="w-full h-40 object-cover rounded-lg mb-2"
+                       onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                  <div class="hidden text-6xl mb-2">📷</div>
+                  <p class="text-pink-800 font-bold">${name}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>`;
+      }
+    }
+
+    // ===================== Video Modal =====================
+    function openVideoModal(){
+      document.getElementById('videoModal').classList.remove('hidden');
+      // try play (may be blocked until user interaction - but this is a click)
+      const v = document.getElementById('house1Video');
+      if (v) v.play().catch(()=>{});
+    }
+    function closeVideoModal(){
+      const v = document.getElementById('house1Video');
+      if (v) { v.pause(); v.currentTime = 0; }
+      document.getElementById('videoModal').classList.add('hidden');
+    }
+    document.getElementById('videoModal').addEventListener('click', (e)=>{
+      if(e.target.id === 'videoModal') closeVideoModal();
+    });
+
+    // ===================== Music Toggle =====================
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('musicBtn');
+    let musicOn = false;
+
+    function updateMusicBtn(){
+      musicBtn.textContent = musicOn ? '🔇 เพลง: เปิด' : '🔊 เพลง: ปิด';
+    }
+    musicBtn.addEventListener('click', async ()=>{
+      try{
+        if(!musicOn){
+          await bgm.play();
+          musicOn = true;
+        }else{
+          bgm.pause();
+          musicOn = false;
+        }
+        updateMusicBtn();
+      }catch(err){
+        // ถ้าโดนบล็อก autoplay ให้ผู้ใช้กดอีกครั้ง
+        alert('ไม่สามารถเล่นเพลงได้ กรุณากดปุ่มเพลงอีกครั้ง หรือเช็กว่าไฟล์ Music.mp3 อยู่ถูกที่');
+      }
+    });
+    updateMusicBtn();
+  </script>
+</body>
+</html>
