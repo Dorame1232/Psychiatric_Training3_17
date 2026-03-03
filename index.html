@@ -688,6 +688,13 @@
           </div>
         </div>
 
+        <div onclick="showOPDDetail('psychotic')" class="house-card pixel-border bg-gradient-to-b from-purple-50 to-purple-100 p-6 rounded-lg text-center" style="border-width:3px;">
+            <div class="text-5xl mb-3">👁️‍🗨️</div>
+            <h3 class="text-xl font-bold text-purple-800" style="font-family:'Sarabun',sans-serif;">กลุ่มความคิดและการรับรู้ผิดปกติ</h3>
+            <p class="text-purple-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">Schizophrenia / Paranoid schizophrenia</p>
+            <div class="mt-3 inline-block bg-purple-200 px-3 py-1 rounded-full text-purple-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
+          </div>
+
         <div id="opd-detail" class="pixel-border bg-gradient-to-b from-gray-50 to-gray-100 p-4 rounded-lg min-h-64 overflow-auto scroll-container hidden"
              style="border-width:2px; max-height:400px;">
           <div id="opd-detail-content"></div>
@@ -1334,7 +1341,31 @@
               </div>
             </div>
           </div>`
-      }
+      },
+       psychotic:{
+        content: `
+          <div style="font-family:'Sarabun',sans-serif;">
+            <h3 class="text-lg font-bold text-purple-800 mb-3">👁️‍🗨️ กลุ่มความคิดและการรับรู้ผิดปกติ</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <p class="font-bold text-purple-800 mb-2">ชนิดที่พบ</p>
+                <ul class="text-purple-700 text-sm space-y-1">
+                  <li>• Schizophrenia</li>
+                  <li>• Paranoid schizophrenia</li>
+                </ul>
+              </div>
+              <div class="bg-fuchsia-50 p-4 rounded-lg">
+                <p class="font-bold text-fuchsia-800 mb-2">แนวสังเกตอาการ</p>
+                <ul class="text-fuchsia-700 text-sm space-y-1">
+                  <li>• หูแว่ว/เห็นภาพหลอน</li>
+                  <li>• ความคิดหลงผิด (เช่น ถูกปองร้าย)</li>
+                  <li>• พูดไม่ปะติดปะต่อ/พฤติกรรมแปลก</li>
+                  <li>• การแสดงอารมณ์ลดลง แยกตัว</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
     };
     function showOPDDetail(type){
       const box = document.getElementById('opd-detail');
