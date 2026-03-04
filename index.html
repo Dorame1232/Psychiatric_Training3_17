@@ -676,7 +676,7 @@
           <div onclick="showOPDDetail('neuro')" class="house-card pixel-border bg-gradient-to-b from-green-50 to-green-100 p-6 rounded-lg text-center" style="border-width:3px;">
             <div class="text-5xl mb-3">🧠</div>
             <h3 class="text-xl font-bold text-green-800" style="font-family:'Sarabun',sans-serif;">Neurodevelopmental</h3>
-            <p class="text-green-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติพัฒนาการ ได้แก่ ASD/ADHD/LD</p>
+            <p class="text-green-600 text-sm mt-2" style="font-family:'Sarabun',sans-serif;">ความผิดปกติพัฒนาการ ได้แก่ ADHD</p>
             <div class="mt-3 inline-block bg-green-200 px-3 py-1 rounded-full text-green-700 text-xs">คลิกเพื่อดูรายละเอียด</div>
           </div>
 
@@ -748,41 +748,69 @@
           </div>
         </div>
 
-        <!-- 4 Buttons (เพิ่ม “เพลงที่ใช้ประกอบ”) -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <button onclick="goToThaiWisdomDetail('origin')"
-                  class="info-card pixel-border bg-gradient-to-b from-pink-100 to-pink-200 p-6 rounded-lg text-center hover:from-pink-200 hover:to-pink-300"
-                  style="border-width:3px;">
-            <div class="text-5xl mb-3">📖</div>
-            <h3 class="text-lg font-bold text-pink-800 mb-2" style="font-family:'Sarabun',sans-serif;">ที่มา & ความสำคัญ</h3>
-            <p class="text-pink-600 text-xs" style="font-family:'Sarabun',sans-serif;">เหตุผลและกลุ่มเป้าหมาย</p>
-          </button>
+        <!-- 6 Buttons (เพิ่ม “เพลงที่ใช้ประกอบ”) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <!-- 1 -->
+  <button onclick="goToThaiWisdomDetail('origin')"
+          class="info-card pixel-border bg-gradient-to-b from-pink-100 to-pink-200 p-6 rounded-lg text-center hover:from-pink-200 hover:to-pink-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">📖</div>
+    <h3 class="text-lg font-bold text-pink-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">ที่มา & ความสำคัญ</h3>
+    <p class="text-pink-600 text-xs">เหตุผลและกลุ่มเป้าหมาย</p>
+  </button>
 
-          <button onclick="goToThaiWisdomDetail('process')"
-                  class="info-card pixel-border bg-gradient-to-b from-green-100 to-green-200 p-6 rounded-lg text-center hover:from-green-200 hover:to-green-300"
-                  style="border-width:3px;">
-            <div class="text-5xl mb-3">⏱️</div>
-            <h3 class="text-lg font-bold text-green-800 mb-2" style="font-family:'Sarabun',sans-serif;">ขั้นตอนการทำ</h3>
-            <p class="text-green-600 text-xs" style="font-family:'Sarabun',sans-serif;">รูปแบบ Time line</p>
-          </button>
+  <!-- 2 -->
+  <button onclick="goToThaiWisdomDetail('process')"
+          class="info-card pixel-border bg-gradient-to-b from-green-100 to-green-200 p-6 rounded-lg text-center hover:from-green-200 hover:to-green-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">⏱️</div>
+    <h3 class="text-lg font-bold text-green-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">ขั้นตอนการทำ</h3>
+    <p class="text-green-600 text-xs">รูปแบบ Time line</p>
+  </button>
 
-          <button onclick="goToThaiWisdomDetail('media')"
-                  class="info-card pixel-border bg-gradient-to-b from-blue-100 to-blue-200 p-6 rounded-lg text-center hover:from-blue-200 hover:to-blue-300"
-                  style="border-width:3px;">
-            <div class="text-5xl mb-3">🎬</div>
-            <h3 class="text-lg font-bold text-blue-800 mb-2" style="font-family:'Sarabun',sans-serif;">ภาพประกอบ</h3>
-            <p class="text-blue-600 text-xs" style="font-family:'Sarabun',sans-serif;">สื่อประกอบการเรียนรู้</p>
-          </button>
+  <!-- 3 -->
+  <button onclick="goToThaiWisdomDetail('media')"
+          class="info-card pixel-border bg-gradient-to-b from-blue-100 to-blue-200 p-6 rounded-lg text-center hover:from-blue-200 hover:to-blue-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">🎬</div>
+    <h3 class="text-lg font-bold text-blue-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">ภาพประกอบ</h3>
+    <p class="text-blue-600 text-xs">สื่อประกอบการเรียนรู้</p>
+  </button>
 
-          <!-- ✅ ปุ่มใหม่: เพลงที่ใช้ประกอบ -->
-          <button onclick="goToThaiWisdomDetail('music')"
-                  class="info-card pixel-border bg-gradient-to-b from-purple-100 to-purple-200 p-6 rounded-lg text-center hover:from-purple-200 hover:to-purple-300"
-                  style="border-width:3px;">
-            <div class="text-5xl mb-3">🎵</div>
-            <h3 class="text-lg font-bold text-purple-800 mb-2" style="font-family:'Sarabun',sans-serif;">เพลงที่ใช้ประกอบ</h3>
-            <p class="text-purple-600 text-xs" style="font-family:'Sarabun',sans-serif;">กดเพื่อฟังเพลง</p>
-          </button>
-        </div>
+  <!-- 4 -->
+  <button onclick="goToThaiWisdomDetail('music')"
+          class="info-card pixel-border bg-gradient-to-b from-purple-100 to-purple-200 p-6 rounded-lg text-center hover:from-purple-200 hover:to-purple-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">🎵</div>
+    <h3 class="text-lg font-bold text-purple-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">เพลงที่ใช้ประกอบ</h3>
+    <p class="text-purple-600 text-xs">กดเพื่อฟังเพลง</p>
+  </button>
+
+  <!-- 5 -->
+  <button onclick="goToThaiWisdomDetail('video1')"
+          class="info-card pixel-border bg-gradient-to-b from-red-100 to-red-200 p-6 rounded-lg text-center hover:from-red-200 hover:to-red-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">🎥</div>
+    <h3 class="text-lg font-bold text-red-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">บรรยากาศการจัดกิจกรรม</h3>
+    <p class="text-red-600 text-xs">กดเพื่อดูวิดีโอ</p>
+  </button>
+
+  <!-- 6 -->
+  <button onclick="goToThaiWisdomDetail('video2')"
+          class="info-card pixel-border bg-gradient-to-b from-indigo-100 to-indigo-200 p-6 rounded-lg text-center hover:from-indigo-200 hover:to-indigo-300 h-full"
+          style="border-width:3px;">
+    <div class="text-5xl mb-3">📺</div>
+    <h3 class="text-lg font-bold text-indigo-800 mb-2"
+        style="font-family:'Sarabun',sans-serif;">บรรยากาศการทำกิจกรรมร่วมกัน</h3>
+    <p class="text-indigo-600 text-xs">กดเพื่อดูวิดีโอ</p>
+  </button>
+
+</div>
 
         <div class="flex justify-between items-center">
           <button onclick="goToStage2()" class="pixel-btn bg-gray-400 text-white px-6 py-3 font-bold hover:bg-gray-500" style="font-family:'Sarabun',sans-serif;">
@@ -793,7 +821,43 @@
           </button>
         </div>
       </div>
-    </div>
+      </div>  <!-- ปิด pixel-border -->
+      
+      <!-- ===================== Screen: Video 1 ===================== -->
+<div id="screen-video1" class="min-h-full w-full hidden flex flex-col items-center p-4">
+  <div class="pixel-border bg-white p-6 rounded-lg max-w-3xl w-full text-center">
+
+    <h2 class="text-2xl font-bold mb-4">บรรยากาศการจัดกิจกรรม</h2>
+
+    <video controls autoplay width="100%" class="rounded-lg">
+      <source src="บรรยากาศการจัดกิจกรรม.mp4" type="video/mp4">
+    </video>
+
+    <button onclick="goToStage3()"
+      class="mt-6 pixel-btn bg-gray-400 text-white px-6 py-3">
+      ← กลับ
+    </button>
+
+  </div>
+</div>
+
+<!-- ===================== Screen: Video 2 ===================== -->
+<div id="screen-video2" class="min-h-full w-full hidden flex flex-col items-center p-4">
+  <div class="pixel-border bg-white p-6 rounded-lg max-w-3xl w-full text-center">
+
+    <h2 class="text-2xl font-bold mb-4">บรรยากาศการทำกิจกรรมร่วมกัน</h2>
+
+    <video controls autoplay width="100%" class="rounded-lg">
+      <source src="บรรยากาศการทำกิจกรรมร่วมกัน.mp4" type="video/mp4">
+    </video>
+
+    <button onclick="goToStage3()"
+      class="mt-6 pixel-btn bg-gray-400 text-white px-6 py-3">
+      ← กลับ
+    </button>
+
+  </div>
+</div>
 
     <!-- ===================== Screen: Thai Wisdom - Origin & Importance ===================== -->
     <div id="screen-thai-origin" class="min-h-full w-full flex flex-col items-center p-4 hidden">
@@ -1216,6 +1280,8 @@
       if(type === 'process') showScreen('screen-thai-process');
       if(type === 'media') showScreen('screen-thai-media');
       if(type === 'music') showScreen('screen-thai-music'); // ✅ เพิ่มหน้าเพลง
+      else if(type === 'video1') showScreen('screen-video1');
+      else if(type === 'video2') showScreen('screen-video2');
     }
 
     // ✅ ปุ่มสรุปการพยาบาล
@@ -1303,8 +1369,7 @@
               <div class="bg-green-50 p-4 rounded-lg">
                 <p class="font-bold text-green-800 mb-2">ตัวอย่างโรค</p>
                 <ul class="text-green-700 text-sm space-y-1">
-                  <li>• Paranoid schizophrenia</li>
-                  <li>• Schizophrenia</li>
+                  <li>• Attention Deficit Hyperactivity Disorder (ADHD)</li>
                 </ul>
               </div>
               <div class="bg-lime-50 p-4 rounded-lg">
