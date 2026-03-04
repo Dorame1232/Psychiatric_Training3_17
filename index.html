@@ -829,7 +829,7 @@
 
     <h2 class="text-2xl font-bold mb-4">บรรยากาศการจัดกิจกรรม</h2>
 
-    <video controls autoplay width="100%" class="rounded-lg">
+    <video controls width="100%" class="rounded-lg">
       <source src="บรรยากาศการจัดกิจกรรม.mp4" type="video/mp4">
     </video>
 
@@ -847,7 +847,7 @@
 
     <h2 class="text-2xl font-bold mb-4">บรรยากาศการทำกิจกรรมร่วมกัน</h2>
 
-    <video controls autoplay width="100%" class="rounded-lg">
+    <video controls width="100%" class="rounded-lg">
       <source src="บรรยากาศการทำกิจกรรมร่วมกัน.mp4" type="video/mp4">
     </video>
 
@@ -1240,12 +1240,21 @@
   <script>
     // ===================== Game State =====================
     let gameState = { playerName: '', selectedCharacter: null, currentScreen: 'screen-welcome' };
+    // ---------------- Video Control ----------------
+    function stopAllVideos() {
+  const videos = document.querySelectorAll("video");
+  videos.forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
+}
 
     // ===================== Navigation =====================
     function hideAllScreens(){
       document.querySelectorAll('[id^="screen-"]').forEach(s => s.classList.add('hidden'));
     }
     function showScreen(id){
+      stopAllVideos();
       hideAllScreens();
       const el = document.getElementById(id);
       if (el) el.classList.remove('hidden');
@@ -1282,7 +1291,16 @@
       if(type === 'music') showScreen('screen-thai-music'); // ✅ เพิ่มหน้าเพลง
       else if(type === 'video1') showScreen('screen-video1');
       else if(type === 'video2') showScreen('screen-video2');
+      
     }
+
+    function stopAllVideos() {
+  const videos = document.querySelectorAll("video");
+  videos.forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
+}
 
     // ✅ ปุ่มสรุปการพยาบาล
     function goToNursingSummary(){
